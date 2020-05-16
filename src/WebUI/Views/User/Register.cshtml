@@ -1,0 +1,31 @@
+﻿@model RegisterViewModel
+
+@{
+    Layout = "_IdentityLayout";
+}
+
+    <h5>ایجاد حساب</h5>
+
+    <!-- form -->
+    <form asp-action="Register">
+        <div class="form-group">
+            <input asp-for="FirstName" class="form-control" placeholder="نام" required autofocus>
+        </div>
+        <div class="form-group">
+            <input asp-for="LastName" class="form-control" placeholder="نام خانوادگی" required>
+        </div>
+        <div class="form-group">
+            <input asp-for="Email" class="form-control text-left" placeholder="ایمیل" dir="ltr" required>
+        </div>
+        <div class="form-group">
+            <input asp-for="Password" class="form-control text-left" placeholder="رمز عبور" dir="ltr" required>
+        </div>
+        <div class="form-group">
+            <input asp-for="ConfirmPassword" class="form-control text-left" placeholder="تکرار رمز عبور" dir="ltr" required>
+        </div>
+        <button class="btn btn-primary btn-block">ثبت نام</button>
+        <hr>
+        <p class="text-muted">حساب کاربری دارید؟</p>
+        <a asp-action="Login" asp-route-returnUrl="@ViewData["ReturnUrl"]" class="btn btn-outline-light btn-sm">وارد شوید!</a>
+    </form>
+    <!-- ./ form -->

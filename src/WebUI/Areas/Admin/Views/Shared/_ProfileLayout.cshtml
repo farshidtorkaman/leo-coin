@@ -1,0 +1,34 @@
+﻿
+@{
+    Layout = "~/Areas/Panel/Views/Shared/_PanelLayout.cshtml";
+    string path = Context.Request.Path;
+    path = path.Substring(12); // remove /panel/user/ to avoid redundancy
+}
+
+<div class="row">
+    <div class="col-lg-3 col-md-3 col-sm-12">
+        <div class="card">
+            <div class="text-center p-t-15">
+                <figure class="avatar avatar-xl">
+                    <img src="~/assets/media/image/user.png" class="rounded-circle" alt="image">
+                </figure>
+                <p>فرشید ترکمن</p>
+                <p>farshidtorkaman98@gmail.com</p>
+            </div>
+            <hr />
+            <div class="nav flex-column nav-pills profileMenu" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <a class="nav-link @(path == "profile" ? "active" : "")" id="v-pills-home-tab" asp-area="Panel" asp-controller="User" asp-action="Index">اطلاعات هویتی</a>
+                <a class="nav-link @(path == "financial" ? "active" : "")" id="v-pills-profile-tab" asp-area="Panel" asp-controller="User" asp-action="Financial">اطلاعات مالی</a>
+                <a class="nav-link @(path == "documents" ? "active" : "")" id="v-pills-messages-tab" asp-area="Panel" asp-controller="User" asp-action="Documents">ارسال مدارک</a>
+                <a class="nav-link @(path == "change_password" ? "active" : "")" id="v-pills-settings-tab" asp-area="Panel" asp-controller="User" asp-action="ChangePassword">کلمه عبور</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-9 col-md-9 col-sm-12">
+        @RenderBody()
+    </div>
+</div>
+
+@section Scripts {
+    @RenderSection("ProfileScripts", false)
+}

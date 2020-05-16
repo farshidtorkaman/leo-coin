@@ -1,0 +1,38 @@
+﻿@{
+    ViewData["Title"] = "خرید";
+    Layout = "~/Areas/Panel/Views/Shared/_PanelLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h6 class="card-title">خرید ارز دیجیتال</h6>
+                <form asp-action="Index">
+                    <div class="form-group">
+                        <label for="amount">مقدار</label>
+                        <input type="text" class="form-control text-left" id="amount" name="Amount" dir="ltr">
+                    </div>
+                    <div class="form-group">
+                        <label for="tomanPrice">معادل تومانی</label>
+                        <input type="text" disabled class="form-control text-left" id="tomanPrice" dir="ltr">
+                    </div>
+                    <div class="form-group">
+                        <label for="walletId">آدرس کیف پول</label>
+                        <input type="text" class="form-control text-left" name="WalletId" id="walletId" dir="ltr">
+                    </div>
+                    <div class="form-group">
+                        <label for="description">توضیحات اضافه</label>
+                        <textarea class="form-control" id="description" name="Description" rows="3"></textarea>
+                    </div>
+                    <div class="d-flex align-items-center m-b-20 mt-3">
+                        <h5 class="font-size-13 primary-font">مبلغ قابل پرداخت : </h5>
+                        <h3 class="primary-font ml-2">1,608,469 تومان</h3>
+                    </div>
+                    <button type="submit" class="btn btn-primary">ثبت</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

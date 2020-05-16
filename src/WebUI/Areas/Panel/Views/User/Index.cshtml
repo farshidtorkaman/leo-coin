@@ -1,0 +1,107 @@
+﻿@model Crypto.Application.Users.Profile.Queries.UserProfileVm
+
+@{
+    ViewData["Title"] = "پروفایل";
+    Layout = "~/Areas/Panel/Views/Shared/_ProfileLayout.cshtml";
+}
+
+<div class="card">
+    <div class="card-body">
+        <h6 class="card-title">اطلاعات هویتی</h6>
+        <form asp-action="Index">
+            <input type="hidden" asp-for="Id"/>
+
+            <div class="form-group row">
+                <label for="FirstName" class="col-sm-2 col-form-label">نام</label>
+                <div class="col-sm-10">
+                    <input asp-for="FirstName" class="form-control">
+                    <span class="text-danger" asp-validation-for="FirstName"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="LastName" class="col-sm-2 col-form-label">نام خانوادگی</label>
+                <div class="col-sm-10">
+                    <input asp-for="LastName" class="form-control">
+                    <span class="text-danger" asp-validation-for="LastName"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="PhoneNumber" class="col-sm-2 col-form-label">تلفن همراه</label>
+                <div class="col-sm-10">
+                    @*<input type="text" class="form-control" id="phoneNumber">*@
+                    <div class="input-group">
+                        <input asp-for="PhoneNumber" class="form-control">
+                        <div class="input-group-append">
+                            @if (Model.PhoneNumberConfirmed)
+                            {
+                                <span class="input-group-text bg-success" id="phoneNumberStatus">تایید شده</span>
+                            }
+                            else
+                            {
+                                <span class="input-group-text" id="phoneNumberStatus">تایید نشده</span>
+                            }
+                        </div>
+                    </div>
+                    <span class="text-danger" asp-validation-for="PhoneNumber"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="Tell" class="col-sm-2 col-form-label">تلفن ثابت</label>
+                <div class="col-sm-10">
+                    <div class="input-group">
+                        <input asp-for="Tell" class="form-control">
+                        <div class="input-group-append">
+                            @if (Model.TellConfirmed)
+                            {
+                                <span class="input-group-text bg-success" id="tellStatus">تایید شده</span>
+                            }
+                            else
+                            {
+                                <span class="input-group-text" id="tellStatus">تایید نشده</span>
+                            }
+                        </div>
+                    </div>
+                    <span class="text-danger" asp-validation-for="Tell"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="ProvinceId" class="col-sm-2 col-form-label">استان</label>
+                <div class="col-sm-10">
+                    <select class="form-control" asp-for="ProvinceId" asp-items="ViewBag.ProvinceId">
+                        <option value="0">انتخاب کنید</option>
+                    </select>
+                </div>
+                <span class="text text-danger" asp-validation-for="ProvinceId"></span>
+            </div>
+            <div class="form-group row">
+                <label for="CityId" class="col-sm-2 col-form-label">شهر</label>
+                <div class="col-sm-10">
+                    <select asp-for="CityId" class="form-control" asp-items="ViewBag.CityId">
+                        <option value="0">انتخاب کنید</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="Address" class="col-sm-2 col-form-label">آدرس</label>
+                <div class="col-sm-10">
+                    <input asp-for="Address" class="form-control">
+                    <span class="text-danger" asp-validation-for="Address"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="PostalCode" class="col-sm-2 col-form-label">کد پستی</label>
+                <div class="col-sm-10">
+                    <input asp-for="PostalCode" class="form-control">
+                    <span class="text-danger" asp-validation-for="PostalCode"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-2"></div>
+                <div class="col-md-9">
+                    <button type="submit" class="btn btn-primary">ذخیره تغییرات</button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>

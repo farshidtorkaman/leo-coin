@@ -1,0 +1,61 @@
+@using Crypto.Domain.Enums
+@using Microsoft.AspNetCore.Identity
+@using WebUI.Helpers
+@model List<Crypto.Application.Reports.Queries.ConfirmationQueryVm>
+
+@{
+    ViewData["Title"] = "داشبورد";
+    Layout = "~/Areas/Panel/Views/Shared/_PanelLayout.cshtml";
+}
+
+<style>
+    .tasks div {
+        padding: 20px;
+    }
+
+    .tasks span {
+        font-size: 1.01rem;
+    }
+</style>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">وضعیت حساب کاربری</h5>
+
+                @foreach (var report in Model)
+                {
+                    var status = EnumHelper<Status>.GetDisplayValue(report.Status);
+                    <div class=" d-flex justify-content-between align-items-center flex-sm-row tasks">
+                        <div>@report.Title</div>
+                        <span class="badge badge-pill @report.ClassName">@status</span>
+                    </div>
+                    
+                }
+                @* <div class=" d-flex justify-content-between align-items-center flex-sm-row tasks"> *@
+                @*     <div>تلفن همراه</div> *@
+                @*     <span class="badge badge-pill badge-danger">ارسال نشده</span> *@
+                @* </div> *@
+                @* <div class=" d-flex justify-content-between align-items-center flex-sm-row tasks"> *@
+                @*     <div>تلفن ثابت</div> *@
+                @*     <span class="badge badge-pill badge-light">ارسال شده</span> *@
+                @* </div> *@
+                @* <div class=" d-flex justify-content-between align-items-center flex-sm-row tasks"> *@
+                @*     <div>کارت ملی</div> *@
+                @*     <span class="badge badge-pill badge-success">تایید شده</span> *@
+                @* </div> *@
+                @* <div class=" d-flex justify-content-between align-items-center flex-sm-row tasks"> *@
+                @*     <div>کارت بانکی</div> *@
+                @*     <span class="badge badge-pill">تایید شده</span> *@
+                @* </div> *@
+                @* <div class=" d-flex justify-content-between align-items-center flex-sm-row tasks"> *@
+                @*     <div>درخواست نامه</div> *@
+                @*     <div>ارسال نشده</div> *@
+                @* </div> *@
+                
+                <button type="button" class="btn btn-primary btn-block">تکمیل مدارک</button>
+            </div>
+        </div>
+    </div>
+</div>

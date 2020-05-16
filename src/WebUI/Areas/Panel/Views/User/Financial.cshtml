@@ -1,0 +1,64 @@
+﻿@model Crypto.Application.Users.FinancialInformation.Queries.FinancialInfoVm
+@{
+    ViewData["Title"] = "Financial";
+    Layout = "~/Areas/Panel/Views/Shared/_ProfileLayout.cshtml";
+}
+
+<div class="card">
+    <div class="card-body">
+        <h6 class="card-title">اطلاعات مالی</h6>
+        <form asp-action="Financial">
+            <input type="hidden" asp-for="Id" />
+            
+            <div class="form-group row">
+                <label for="CardNumber" class="col-sm-2 col-form-label">شماره کارت</label>
+                <div class="col-sm-10">
+                    <input asp-for="CardNumber" class="form-control text-right">
+                    <span asp-validation-for="CardNumber" class="text text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="BankName" class="col-sm-2 col-form-label">نام بانک</label>
+                <div class="col-sm-10">
+                    <select class="form-control" asp-for="BankId" asp-items="@ViewBag.BankId">
+                        <option value="0">انتخاب کنید</option>
+                    </select>
+                    <span asp-validation-for="BankId" class="text text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="AccountOwnerName" class="col-sm-2 col-form-label">نام دارنده حساب</label>
+                <div class="col-sm-10">
+                    <input asp-for="AccountOwnerName" class="form-control">
+                    <span asp-validation-for="AccountOwnerName" class="text text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="AccountNumber" class="col-sm-2 col-form-label">شماره حساب</label>
+                <div class="col-sm-10">
+                    <input asp-for="AccountNumber" class="form-control text-right">
+                    <span asp-validation-for="AccountNumber" class="text text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="Sheba" class="col-sm-2 col-form-label">شماره شبا</label>
+                <div class="col-sm-10">
+                    <div class="input-group">
+                        <input asp-for="Sheba" class="form-control text-right" dir="ltr">
+                        <div class="input-group-append">
+                            <span class="input-group-text" id="inputGroupPrepend3">IR</span>
+                        </div>
+                    </div>
+                    <span asp-validation-for="Sheba" class="text text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-2"></div>
+                <div class="col-md-9">
+                    <button type="submit" class="btn btn-primary">ذخیره تغییرات</button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>

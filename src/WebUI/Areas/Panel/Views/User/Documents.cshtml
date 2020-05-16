@@ -1,0 +1,187 @@
+﻿@using Crypto.Domain.Enums
+@model Crypto.Application.Users.Documents.Queries.DocumentVm
+@using MD.PersianDateTime.Standard
+
+@{
+    ViewData["Title"] = "Documents";
+    Layout = "~/Areas/Panel/Views/Shared/_ProfileLayout.cshtml";
+
+    var birthDate = new PersianDateTime(Model?.BirthDate);
+}
+<link href="~/vendors/mddatepicker/jquery.md.bootstrap.datetimepicker.style.css" rel="stylesheet"/>
+
+<div class="card">
+    <div class="card-body">
+        <h6 class="card-title">ارسال مدارک</h6>
+        <form asp-action="Documents" enctype="multipart/form-data">
+            <input type="hidden" asp-for="Id"/>
+            <div class="form-group row">
+                <label for="NationalCode" class="col-sm-3 col-form-label">کد ملی</label>
+                <div class="col-sm-9">
+                    @if (Model?.NationalCardImageStatus == DocumentImagesStatus.Sent || Model?.NationalCardImageStatus == DocumentImagesStatus.Confirmed)
+                    {
+                        <input asp-for="NationalCode" class="form-control" readonly>
+                    }
+                    else
+                    {
+                        <input asp-for="NationalCode" class="form-control">
+                    }
+                    <span class="text text-danger" asp-validation-for="NationalCode"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="BirthDate" class="col-sm-3 col-form-label">تاریخ تولد</label>
+                <div class="col-sm-9">
+                    <input asp-for="BirthDate" type="hidden">
+                    @if (Model?.NationalCardImageStatus == DocumentImagesStatus.Sent || Model?.NationalCardImageStatus == DocumentImagesStatus.Confirmed)
+                    {
+                        <input type="text" value="@birthDate.ToShortDateString()" class="form-control text-left" readonly>
+                    }
+                    else
+                    {
+                        <input type="text" id="BirthDateInput" class="form-control text-left">
+                    }
+
+                    <span class="text text-danger" asp-validation-for="BirthDate"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="nationalCardPicture" class="col-sm-3 col-form-label">تصویر کارت ملی</label>
+                <div class="col-sm-9">
+                    <div class="custom-file">
+                        @if (Model?.NationalCardImageStatus == DocumentImagesStatus.Confirmed || Model?.NationalCardImageStatus == DocumentImagesStatus.Sent)
+                        {
+                            <input type="file" class="custom-file-input" name="NationalCardImage" id="nationalCardPicture" disabled>
+                        }
+                        else
+                        {
+                            <input type="file" class="custom-file-input" name="NationalCardImage" id="nationalCardPicture">
+                        }
+                        <label class="custom-file-label" for="nationalCardPicture"></label>
+                    </div>
+                    @if (Model?.NationalCardImageStatus == DocumentImagesStatus.Confirmed)
+                    {
+                        <small class="form-text text-success">
+                            تایید شده
+                        </small>
+                    }
+                    @if (Model?.NationalCardImageStatus == DocumentImagesStatus.Rejected)
+                    {
+                        <small class="form-text text-danger">
+                            رد شده
+                        </small>
+                    }
+                    @if (Model?.NationalCardImageStatus == DocumentImagesStatus.Sent)
+                    {
+                        <small class="form-text text-muted">
+                            ارسال شده
+                        </small>
+                    }
+                    <span class="text text-danger" asp-validation-for="NationalCardImage"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="bankCardPicture" class="col-sm-3 col-form-label">تصویر کارت بانکی</label>
+                <div class="col-sm-9">
+                    <div class="custom-file">
+                        @if (Model?.BankCardImageStatus == DocumentImagesStatus.Confirmed || Model?.BankCardImageStatus == DocumentImagesStatus.Sent)
+                        {
+                            <input type="file" class="custom-file-input" name="BankCardImage" id="bankCardPicture" disabled>
+                        }
+                        else
+                        {
+                            <input type="file" class="custom-file-input" name="BankCardImage" id="bankCardPicture">
+                        }
+
+                        <label class="custom-file-label" for="bankCardPicture"></label>
+                    </div>
+                    @if (Model?.BankCardImageStatus == DocumentImagesStatus.Confirmed)
+                    {
+                        <small class="form-text text-success">
+                            تایید شده
+                        </small>
+                    }
+                    @if (Model?.BankCardImageStatus == DocumentImagesStatus.Rejected)
+                    {
+                        <small class="form-text text-danger">
+                            رد شده
+                        </small>
+                    }
+                    @if (Model?.BankCardImageStatus == DocumentImagesStatus.Sent)
+                    {
+                        <small class="form-text text-muted">
+                            ارسال شده
+                        </small>
+                    }
+                    <span class="text text-danger" asp-validation-for="BankCardImage"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="applicationPicture" class="col-sm-3 col-form-label">تصویر درخواست نامه</label>
+                <div class="col-sm-9">
+                    <div class="custom-file">
+                        @if (Model?.ApplicantImageStatus == DocumentImagesStatus.Confirmed || Model?.ApplicantImageStatus == DocumentImagesStatus.Sent)
+                        {
+                            <input type="file" class="custom-file-input" name="ApplicantImage" id="applicationPicture" disabled>
+                        }
+                        else
+                        {
+                            <input type="file" class="custom-file-input" name="ApplicantImage" id="applicationPicture">
+                        }
+
+                        <label class="custom-file-label" for="bankCardPicture"></label>
+                    </div>
+                    @if (Model?.ApplicantImageStatus == DocumentImagesStatus.Confirmed)
+                    {
+                        <small class="form-text text-success">
+                            تایید شده
+                        </small>
+                    }
+                    @if (Model?.ApplicantImageStatus == DocumentImagesStatus.Rejected)
+                    {
+                        <small class="form-text text-danger">
+                            رد شده
+                        </small>
+                    }
+                    @if (Model?.ApplicantImageStatus == DocumentImagesStatus.Sent)
+                    {
+                        <small class="form-text text-muted">
+                            ارسال شده
+                        </small>
+                    }
+                    <span class="text text-danger" asp-validation-for="ApplicantImage"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-3"></div>
+                <div class="col-md-9">
+                    <button type="submit" class="btn btn-primary">ارسال اطلاعات</button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>
+
+@section ProfileScripts {
+    <script src="~/vendors/mddatepicker/jquery.md.bootstrap.datetimepicker.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('#BirthDateInput').MdPersianDateTimePicker({
+                            targetTextSelector: '#BirthDateInput',
+                            targetDateSelector: '#BirthDate',
+                            placement: 'bottom',
+                            enableTimePicker: false,
+                            dateFormat: 'yyyy/MM/dd',
+                            textFormat: 'yyyy/MM/dd',
+                            disableAfterToday: true
+                        });
+            
+            $(".custom-file-input").on("change", function(){
+                let fileName = $(this).val().split("\\").pop();
+                $(this).next(".custom-file-label").html(fileName);
+            });
+        });
+            
+        </script>
+}
