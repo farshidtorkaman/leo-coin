@@ -204,16 +204,37 @@ namespace Crypto.Infrastructure.Persistence.Migrations
                     b.Property<double>("Amount")
                         .HasColumnType("double");
 
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
                     b.Property<int>("CurrencyId")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsDone")
                         .HasColumnType("tinyint(1)");
 
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
                     b.Property<double>("PricePaid")
                         .HasColumnType("double");
 
+                    b.Property<string>("RejectReason")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
                     b.Property<string>("TransactionId")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("TransactionLink")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("UserId")

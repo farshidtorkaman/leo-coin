@@ -13,6 +13,7 @@ namespace Crypto.Application.Purchases.Commands
         public double Amount { get; set; }
         public string WalletId { get; set; }
         public string CurrencyUrl { get; set; }
+        public string UserId { get; set; }
     }
 
     public class PurchaseCommandHandler : IRequestHandler<PurchaseCommand, int>
@@ -36,6 +37,7 @@ namespace Crypto.Application.Purchases.Commands
                 Amount = request.Amount,
                 CurrencyId = currency.Id,
                 WalletId = request.WalletId,
+                UserId = request.UserId,
                 PricePaid = 0
             };
 
