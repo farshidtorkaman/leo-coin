@@ -216,6 +216,9 @@ namespace Crypto.Infrastructure.Persistence.Migrations
                     b.Property<string>("TransactionId")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
                     b.Property<string>("WalletId")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 

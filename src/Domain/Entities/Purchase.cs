@@ -10,5 +10,6 @@
         public double PricePaid { get; set; }
         public bool IsDone { get; set; }
         public string TransactionId { get; set; }
+        public string UserId { get; set; }
     }
 }

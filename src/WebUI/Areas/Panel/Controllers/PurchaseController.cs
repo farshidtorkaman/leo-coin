@@ -45,7 +45,7 @@ namespace WebUI.Areas.Panel.Controllers
             return Redirect(redirect);
         }
 
-        [Route("buy/verify/{purchaseId}")]
+        [Route("buy/verify")]
         public async Task<IActionResult> Verify(string status, string token, int purchaseId)
         {
             try

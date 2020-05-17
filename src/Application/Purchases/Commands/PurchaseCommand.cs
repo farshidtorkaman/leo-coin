@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using Crypto.Application.Common.Exceptions;
 using Crypto.Application.Common.Interfaces;
@@ -28,7 +27,7 @@ namespace Crypto.Application.Purchases.Commands
         public async Task<int> Handle(PurchaseCommand request, CancellationToken cancellationToken)
         {
             var currency = await _context.Currencies.FirstOrDefaultAsync(f => f.DisplayUrl == request.CurrencyUrl,
-                cancellationToken: cancellationToken);
+                cancellationToken);
             if (currency == null)
                 throw new NotFoundException(nameof(Currency), request.CurrencyUrl);
 
