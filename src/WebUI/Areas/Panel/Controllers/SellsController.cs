@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Crypto.Application.Common.Exceptions;
 using Crypto.Application.Currencies.Queries;
 using Crypto.Application.Sells.Commands;
 using Crypto.Infrastructure.Identity;
@@ -35,13 +36,28 @@ namespace WebUI.Areas.Panel.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(SellCommand command, string displayUrl)
         {
-            var user = await _userManager.GetUserAsync(HttpContext.User);
-            command.UserId = user.Id;
-            command.CurrencyUrl = displayUrl;
-            
-            await Mediator.Send(command);
+            try
+            {
+                var user = await _userManager.GetUserAsync(HttpContext.User);
+                command.UserId = user.Id;
+                command.CurrencyUrl = displayUrl;
 
-            return RedirectToAction("Sells", "Factors");
+                await Mediator.Send(command);
+
+                return RedirectToAction("Sells", "Factors");
+            }
+            catch (ValidationException exception)
+            {
+                foreach (var (key, value) in exception.Errors)
+                {
+                    ModelState.AddModelError(key, value[0]);
+                }
+                return View(command);
+            }
+            catch (NotFoundException exception)
+            {
+                return NotFound(exception.Message);
+            }
         }
     }
 }

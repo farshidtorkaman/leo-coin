@@ -139,6 +139,8 @@ namespace WebUI.Areas.Panel.Controllers
                 }
 
                 var model = await Mediator.Send(new GetDocumentQuery {UserId = user.Id});
+                if (model == null) return View();
+
                 model.NationalCode = command.NationalCode;
                 model.BirthDate = command.BirthDate;
                 return View(model);
@@ -156,7 +158,7 @@ namespace WebUI.Areas.Panel.Controllers
         public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
         {
             if (!ModelState.IsValid) return View(model);
-            
+
             var user = await _userManager.GetUserAsync(HttpContext.User);
             var result = await _identityService.ChangePasswordAsync(user.Id, model.OldPassword, model.NewPassword);
             if (!result.Succeeded)
@@ -171,7 +173,6 @@ namespace WebUI.Areas.Panel.Controllers
 
             await _signInManager.RefreshSignInAsync(user);
             return RedirectToAction("Index", "Dashboard");
-
         }
 
         [Route("confirm_phone")]

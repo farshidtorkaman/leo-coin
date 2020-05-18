@@ -41,15 +41,30 @@ namespace WebUI.Areas.Panel.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(PurchaseCommand command, string displayUrl)
         {
-            var user = await _userManager.GetUserAsync(HttpContext.User);
-            command.CurrencyUrl = displayUrl;
-            command.UserId = user.Id;
-            var purchaseId = await Mediator.Send(command);
-            
-            var callBackUrl = Url.Action("Verify", "Purchase", new {purchaseId}, Request.Scheme);
-            var redirect = await _paymentService.Pay(1000, callBackUrl);
+            try
+            {
+                var user = await _userManager.GetUserAsync(HttpContext.User);
+                command.CurrencyUrl = displayUrl;
+                command.UserId = user.Id;
+                var purchaseId = await Mediator.Send(command);
 
-            return Redirect(redirect);
+                var callBackUrl = Url.Action("Verify", "Purchase", new {purchaseId}, Request.Scheme);
+                var redirect = await _paymentService.Pay(1000, callBackUrl);
+
+                return Redirect(redirect);
+            }
+            catch (ValidationException exception)
+            {
+                foreach (var (key, value) in exception.Errors)
+                {
+                    ModelState.AddModelError(key, value[0]);
+                }
+                return View(command);
+            }
+            catch (NotFoundException exception)
+            {
+                return NotFound(exception.Message);
+            }
         }
 
         [Route("buy/verify")]

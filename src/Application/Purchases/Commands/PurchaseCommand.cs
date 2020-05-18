@@ -13,6 +13,7 @@ namespace Crypto.Application.Purchases.Commands
         public double Amount { get; set; }
         public string WalletId { get; set; }
         public string CurrencyUrl { get; set; }
+        public string Description { get; set; }
         public string UserId { get; set; }
     }
 
@@ -37,6 +38,7 @@ namespace Crypto.Application.Purchases.Commands
                 Amount = request.Amount,
                 CurrencyId = currency.Id,
                 WalletId = request.WalletId,
+                Description = request.Description,
                 UserId = request.UserId,
                 PricePaid = 0
             };
