@@ -1,0 +1,38 @@
+﻿
+@{
+    ViewBag.Title = "فروش";
+    Layout = "~/Areas/Panel/Views/Shared/_PanelLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h6 class="card-title">فروش ارز دیجیتال</h6>
+                <form asp-action="Index">
+                    <div class="form-group">
+                        <label for="amount">مقدار</label>
+                        <input type="text" class="form-control text-left" id="amount" name="Amount" dir="ltr">
+                    </div>
+                    <div class="form-group">
+                        <label for="tomanPrice">معادل تومانی</label>
+                        <input type="text" disabled class="form-control text-left" id="tomanPrice" dir="ltr">
+                    </div>
+                    <div class="form-group">
+                        <label for="walletId">کیف پول ما</label>
+                        <input type="text" disabled class="form-control text-left" id="walletId" value="3242421421ifjdsafjsadfjsa" dir="ltr">
+                    </div>
+                    <div class="form-group">
+                        <label for="transactionLink">لینک تراکنش</label>
+                        <input type="text" class="form-control text-left" name="TransactionLink" id="transactionLink" dir="ltr">
+                    </div>
+                    <div class="form-group">
+                        <label for="description">توضیحات اضافه</label>
+                        <textarea class="form-control" id="description" name="Description" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">ثبت</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

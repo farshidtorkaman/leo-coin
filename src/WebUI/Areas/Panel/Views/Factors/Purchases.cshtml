@@ -1,8 +1,10 @@
-﻿@using Crypto.Domain.Enums
+﻿@using System.Globalization
+@using Crypto.Domain.Enums
 @model IEnumerable<Crypto.Application.Factors.Queries.PurchasedFactorVm>
+@using MD.PersianDateTime.Standard
 
 @{
-    ViewBag.Title = "فاکتورها";
+    ViewBag.Title = "فاکتورهای خرید";
     Layout = "~/Areas/Panel/Views/Shared/_PanelLayout.cshtml";
 }
 
@@ -22,15 +24,17 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                @foreach (var factor in Model)
-                {
+
+            @foreach (var factor in Model)
+            {
+                var persianDate = new PersianDateTime(factor.Created);
+                <tr>
                     <td>@factor.Amount</td>
                     <td>@factor.WalletId</td>
                     <td>@factor.TransactionId</td>
-                    <td>@factor.DateCreated</td>
+                    <td>@persianDate.ToString(CultureInfo.InvariantCulture)</td>
 
-                    switch (factor.Status)
+                    @switch (factor.Status)
                     {
                         case PurchaseStatus.InProgress:
                             <td class="text text-warning">در حال بررسی</td>
@@ -49,8 +53,9 @@
                             <td>نامشخص</td>
                             break;
                     }
-                }
-            </tr>
+                </tr>
+            }
+
 
             </tbody>
         </table>

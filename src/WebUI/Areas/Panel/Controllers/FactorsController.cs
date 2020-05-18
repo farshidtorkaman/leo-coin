@@ -8,7 +8,7 @@ using ControllerBase = WebUI.Controllers.ControllerBase;
 namespace WebUI.Areas.Panel.Controllers
 {
     [Area("panel")]
-    [Route("panel")]
+    [Route("panel/factors")]
     public class FactorsController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -18,12 +18,19 @@ namespace WebUI.Areas.Panel.Controllers
             _userManager = userManager;
         }
 
-        [Route("factors")]
-        public async Task<IActionResult> Index()
+        [Route("buys")]
+        public async Task<IActionResult> Purchases()
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
 
             return View(await Mediator.Send(new GetPurchasedFactorsQuery {UserId = user.Id}));
+        }
+
+        [Route("sells")]
+        public async Task<IActionResult> Sells()
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            return View(await Mediator.Send(new GetSoldFactorsQuery {UserId = user.Id}));
         }
     }
 }

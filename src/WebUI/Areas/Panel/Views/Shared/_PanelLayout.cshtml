@@ -281,16 +281,10 @@
                 <a class="@(path == "/panel/buy/bitcoin" ? "active" : "")" asp-area="Panel" asp-controller="Purchase" asp-action="Index" asp-route-displayUrl="bitcoin">خرید بیت کوین</a>
             </li>
         </ul>
-        <ul id="navigationPlugins">
+        <ul id="navigationPlugins" class="@(path.StartsWith("/panel/sell/") ? "navigation-active" : "")">
             <li class="navigation-divider">فروش ارز دیجیتال</li>
             <li>
-                <a href="sweet-alert.html">فروش بیت کوین </a>
-            </li>
-            <li>
-                <a href="lightbox.html">فروش اتریوم </a>
-            </li>
-            <li>
-                <a href="toast.html">فروش لایت کوین </a>
+                <a class="@(path == "/panel/sell/bitcoin" ? "active" : "")" asp-area="Panel" asp-controller="Sells" asp-action="Index" asp-route-displayUrl="bitcoin">فروش بیت کوین</a>
             </li>
         </ul>
     </div>

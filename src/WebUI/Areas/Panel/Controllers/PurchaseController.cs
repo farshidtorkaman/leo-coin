@@ -66,7 +66,8 @@ namespace WebUI.Areas.Panel.Controllers
                     };
 
                     await Mediator.Send(command);
-                    return View();
+
+                    return RedirectToAction("Purchases", "Factors");
                 }
 
                 ViewData["ErrorMessage"] = "خطایی رخ داد";

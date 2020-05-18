@@ -26,6 +26,8 @@ namespace Crypto.Application.Common.Interfaces
         DbSet<Document> Documents { get; set; }
         
         DbSet<Purchase> Purchases { get; set; }
+        
+        DbSet<Sell> Sells { get; set; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }

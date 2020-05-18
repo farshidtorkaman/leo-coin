@@ -49,6 +49,8 @@ namespace Crypto.Infrastructure.Persistence
         public DbSet<Document> Documents { get; set; }
         
         public DbSet<Purchase> Purchases { get; set; }
+        
+        public DbSet<Sell> Sells { get; set; }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
