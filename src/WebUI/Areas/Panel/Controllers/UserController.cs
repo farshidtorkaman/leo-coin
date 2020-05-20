@@ -44,8 +44,7 @@ namespace WebUI.Areas.Panel.Controllers
         [Route("profile")]
         public async Task<IActionResult> Index()
         {
-            var user = await _userManager.GetUserAsync(HttpContext.User);
-            var model = await Mediator.Send(new GetUserProfileQuery {UserId = user.Id});
+            var model = await Mediator.Send(new GetUserProfileQuery {UserId = CurrentUserService.UserId});
 
             ViewBag.ProvinceId = new SelectList(await Mediator.Send(new GetProvincesQuery()),
                 "Id", "Title");
@@ -61,15 +60,12 @@ namespace WebUI.Areas.Panel.Controllers
         {
             try
             {
-                var user = await _userManager.GetUserAsync(HttpContext.User);
                 var phoneNumberChanged = await Mediator.Send(command);
-                if (phoneNumberChanged)
-                {
-                    var result = await _identityService.SendConfirmationSmsAsync(user.Id, command.PhoneNumber);
-                    return result ? RedirectToAction("ConfirmPhoneNumber") : throw new Exception("خطا!");
-                }
+                if (!phoneNumberChanged) return RedirectToAction("Index");
 
-                return RedirectToAction("Index");
+                var result =
+                    await _identityService.SendConfirmationSmsAsync(CurrentUserService.UserId, command.PhoneNumber);
+                return result ? RedirectToAction("ConfirmPhoneNumber") : throw new Exception("خطا!");
             }
             catch (ValidationException exception)
             {
@@ -86,9 +82,8 @@ namespace WebUI.Areas.Panel.Controllers
         [Route("financial")]
         public async Task<IActionResult> Financial()
         {
-            var user = await _userManager.GetUserAsync(HttpContext.User);
             ViewBag.BankId = new SelectList(await Mediator.Send(new GetBanksQuery()), "Id", "Title");
-            return View(await Mediator.Send(new GetFinancialInformationQuery {UserId = user.Id}));
+            return View(await Mediator.Send(new GetFinancialInformationQuery {UserId = CurrentUserService.UserId}));
         }
 
         [Route("financial")]
@@ -97,8 +92,7 @@ namespace WebUI.Areas.Panel.Controllers
         {
             try
             {
-                var user = await _userManager.GetUserAsync(HttpContext.User);
-                command.UserId = user.Id;
+                command.UserId = CurrentUserService.UserId;
                 await Mediator.Send(command);
                 return RedirectToAction("Financial");
             }
@@ -116,18 +110,16 @@ namespace WebUI.Areas.Panel.Controllers
         [Route("documents")]
         public async Task<IActionResult> Documents()
         {
-            var user = await _userManager.GetUserAsync(HttpContext.User);
-            return View(await Mediator.Send(new GetDocumentQuery {UserId = user.Id}));
+            return View(await Mediator.Send(new GetDocumentQuery {UserId = CurrentUserService.UserId}));
         }
 
         [Route("documents")]
         [HttpPost]
         public async Task<IActionResult> Documents(UpdateDocumentCommand command)
         {
-            var user = await _userManager.GetUserAsync(HttpContext.User);
             try
             {
-                command.UserId = user.Id;
+                command.UserId = CurrentUserService.UserId;
                 await Mediator.Send(command);
                 return RedirectToAction("Documents");
             }
@@ -138,7 +130,7 @@ namespace WebUI.Areas.Panel.Controllers
                     ModelState.AddModelError(key, value[0]);
                 }
 
-                var model = await Mediator.Send(new GetDocumentQuery {UserId = user.Id});
+                var model = await Mediator.Send(new GetDocumentQuery {UserId = CurrentUserService.UserId});
                 if (model == null) return View();
 
                 model.NationalCode = command.NationalCode;
@@ -186,22 +178,19 @@ namespace WebUI.Areas.Panel.Controllers
         [HttpPost]
         public async Task<IActionResult> ConfirmPhoneNumber(ConfirmPhoneViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) return View(model);
+
+            var result =
+                await _identityService.ConfirmPhoneAsync(CurrentUserService.UserId, model.PhoneNumber, model.Token);
+            if (result)
             {
-                var user = await _userManager.GetUserAsync(HttpContext.User);
-                var result = await _identityService.ConfirmPhoneAsync(user.Id, model.PhoneNumber, model.Token);
-                if (result)
-                {
-                    var command = new ConfirmPhoneNumberCommand {PhoneNumber = model.PhoneNumber};
-                    await Mediator.Send(command);
+                var command = new ConfirmPhoneNumberCommand {PhoneNumber = model.PhoneNumber};
+                await Mediator.Send(command);
 
-                    return RedirectToAction("Index");
-                }
-
-                ModelState.AddModelError("Token", "کد وارد شده معتبر نیست");
-                return View(model);
+                return RedirectToAction("Index");
             }
 
+            ModelState.AddModelError("Token", "کد وارد شده معتبر نیست");
             return View(model);
         }
 

@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Crypto.Application.Common.Exceptions;
+using Crypto.Application.Common.Interfaces;
 using Crypto.Application.Currencies.Queries;
 using Crypto.Application.Sells.Commands;
 using Crypto.Infrastructure.Identity;
@@ -13,13 +14,6 @@ namespace WebUI.Areas.Panel.Controllers
     [Route("panel")]
     public class SellsController : ControllerBase
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-
-        public SellsController(UserManager<ApplicationUser> userManager)
-        {
-            _userManager = userManager;
-        }
-
         [Route("sell/{displayUrl}")]
         public async Task<IActionResult> Index(string displayUrl)
         {
@@ -43,8 +37,7 @@ namespace WebUI.Areas.Panel.Controllers
         {
             try
             {
-                var user = await _userManager.GetUserAsync(HttpContext.User);
-                command.UserId = user.Id;
+                command.UserId = CurrentUserService.UserId;
                 command.CurrencyUrl = displayUrl;
 
                 await Mediator.Send(command);

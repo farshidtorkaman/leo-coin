@@ -1,6 +1,5 @@
 ﻿using Crypto.Application.Common.Interfaces;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace WebUI.Services
@@ -10,12 +9,9 @@ namespace WebUI.Services
         public CurrentUserService(IHttpContextAccessor httpContextAccessor)
         {
             _httpContextAccessor = httpContextAccessor;
-            // var httpContext = httpContextAccessor.HttpContext;
-            // var user = httpContext?.User;
-            // UserId = httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier);
         }
 
-        private bool _init = false;
+        private bool _init;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private string _userId;
 
