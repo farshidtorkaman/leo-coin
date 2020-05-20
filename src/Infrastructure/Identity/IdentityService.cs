@@ -9,6 +9,7 @@ using Crypto.Application.Common.Exceptions;
 using Crypto.Application.Users.Profile.Commands;
 using Kavenegar;
 using MediatR;
+using System.Security.Claims;
 
 namespace Crypto.Infrastructure.Identity
 {
@@ -86,6 +87,9 @@ namespace Crypto.Infrastructure.Identity
 
             var result = await _userManager.CreateAsync(user, password);
             if (!result.Succeeded) return (result.ToApplicationResult(), user.Id);
+
+            
+            await _userManager.AddClaimAsync(user, new Claim("identifier", user.Id));
             
             var command = new CreateProfileCommand
             {

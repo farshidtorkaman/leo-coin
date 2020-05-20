@@ -23,13 +23,18 @@ namespace WebUI.Areas.Panel.Controllers
         [Route("sell/{displayUrl}")]
         public async Task<IActionResult> Index(string displayUrl)
         {
-            if (displayUrl == null)
-                return BadRequest();
+            try
+            {
+                if (displayUrl == null)
+                    return BadRequest();
 
-            if (!await Mediator.Send(new GetCurrencyQuery {DisplayUrl = displayUrl}))
-                return NotFound();
-            
-            return View();
+                ViewData["WalletId"] = await Mediator.Send(new GetCurrencyWalletIdQuery {DisplayUrl = displayUrl});
+                return View();
+            }
+            catch (ValidationException exception)
+            {
+                return NotFound(exception.Message);
+            }
         }
 
         [Route("sell/{displayUrl}")]

@@ -234,7 +234,7 @@
 <div class="navigation">
     <div class="navigation-icon-menu">
         <ul>
-            <li class="@(path.StartsWith("/panel/dashboard") || path.StartsWith("/panel/user/") ? "active" : "")" data-toggle="tooltip" title="پنل">
+            <li class="@(path.StartsWith("/panel/dashboard") || path.StartsWith("/panel/user/") || path.StartsWith("/panel/factors/") ? "active" : "")" data-toggle="tooltip" title="پنل">
                 <a href="#navigationDashboards" title="پنل">
                     <i class="icon ti-pie-chart"></i>
                     <span class="badge badge-warning">2</span>
@@ -260,7 +260,7 @@
         </ul>
     </div>
     <div class="navigation-menu-body">
-        <ul id="navigationDashboards" class="@(path.StartsWith("/panel/dashboard") || path.StartsWith("/panel/user/") ? "navigation-active" : "")">
+        <ul id="navigationDashboards" class="@(path.StartsWith("/panel/dashboard") || path.StartsWith("/panel/user/") || path.StartsWith("/panel/factors/") ? "navigation-active" : "")">
             <li class="navigation-divider">پنل</li>
             <li>
                 <a class="@(path == "/panel/dashboard" ? "active" : "")" asp-area="Panel" asp-controller="Dashboard" asp-action="Index">داشبورد</a>
@@ -270,6 +270,17 @@
             </li>
             <li>
                 <a href="dashboard-three.html">لیست تیکت ها </a>
+            </li>
+            <li class="@(path.StartsWith("/panel/factors/") ? "open" : "")">
+                <a href="#">فاکتورها</a>
+                <ul>
+                    <li>
+                        <a asp-area="Panel" asp-controller="Factors" asp-action="Purchases" class="@(path == "/panel/factors/buys" ? "active" : "")">فاکتورهای خرید</a>
+                    </li>
+                    <li>
+                        <a asp-area="Panel" asp-controller="Factors" asp-action="Sells" class="@(path == "/panel/factors/sells" ? "active" : "")">فاکتورهای فروش</a>
+                    </li>
+                </ul>
             </li>
             <li>
                 <a class="@(path.StartsWith("/panel/user") ? "active" : "")" asp-area="Panel" asp-controller="User" asp-action="Index">تنظیمات پروفایل </a>
