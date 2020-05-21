@@ -1,0 +1,65 @@
+﻿@model Crypto.Application.Tickets.Commands.CreateTicket.CreateTicketCommand
+
+@{
+    ViewBag.Title = "ایجاد پیام";
+    Layout = "~/Areas/Panel/Views/Shared/_PanelLayout.cshtml";
+}
+<form asp-action="Create">
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="Topic" class="col-form-label">عنوان پیام</label>
+                        <input asp-for="Topic" class="form-control">
+                        <span class="text text-danger" asp-validation-for="Topic"></span>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="Description" class="col-form-label">توضیحات</label>
+                        <textarea asp-for="Description"></textarea>
+                        <span class="text text-danger" asp-validation-for="Description"></span>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <button class="btn btn-primary" type="submit">ارسال پیام</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts
+{
+    <!-- CKEditor -->
+    <script src="~/vendors/ckeditor/ckeditor.js"></script>
+
+    <script>
+    if($('#Description').length) {
+            CKEDITOR.replace('Description', {
+                // Define the toolbar groups as it is a more accessible solution.
+                toolbarGroups: [{
+                    "name": "basicstyles",
+                    "groups": ["basicstyles"]
+                },
+                    {
+                        "name": "links",
+                        "groups": ["links"]
+                    },
+                    {
+                        "name": "paragraph",
+                        "groups": ["list", "blocks"]
+                    },
+                    {
+                        "name": "insert",
+                        "groups": ["insert"]
+                    }
+                ],
+                // Remove the redundant buttons from toolbar groups defined above.
+                removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar'
+            });
+        }
+    </script>
+}

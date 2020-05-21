@@ -25,7 +25,7 @@ namespace WebUI.Areas.Panel.Controllers
                 ViewData["WalletId"] = await Mediator.Send(new GetCurrencyWalletIdQuery {DisplayUrl = displayUrl});
                 return View();
             }
-            catch (ValidationException exception)
+            catch (NotFoundException exception)
             {
                 return NotFound(exception.Message);
             }

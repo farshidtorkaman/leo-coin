@@ -51,6 +51,10 @@ namespace Crypto.Infrastructure.Persistence
         public DbSet<Purchase> Purchases { get; set; }
         
         public DbSet<Sell> Sells { get; set; }
+        
+        public DbSet<Ticket> Tickets { get; set; }
+        
+        public DbSet<TicketMessage> TicketMessages { get; set; }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {

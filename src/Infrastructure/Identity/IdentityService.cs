@@ -16,14 +16,16 @@ namespace Crypto.Infrastructure.Identity
     public class IdentityService : IIdentityService
     {
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IApplicationDbContext _context;
         private readonly IEmailSender _emailSender;
         private readonly IMediator _mediator;
 
-        public IdentityService(UserManager<ApplicationUser> userManager, IEmailSender emailSender, IMediator mediator)
+        public IdentityService(UserManager<ApplicationUser> userManager, IEmailSender emailSender, IMediator mediator, IApplicationDbContext context)
         {
             _userManager = userManager;
             _emailSender = emailSender;
             _mediator = mediator;
+            _context = context;
         }
 
         public async Task<bool> SendConfirmationEmailAsync(string email, string callBackUrl)
@@ -77,6 +79,13 @@ namespace Crypto.Infrastructure.Identity
 
             return user.UserName;
         }
+
+        public string GetFullName(string userId)
+        {
+            var profile = _context.UsersProfiles.FirstOrDefault(f => f.UserId == userId);
+            return profile?.FirstName + " " + profile?.LastName;
+        }
+
         public async Task<(Result Result, string UserId)> CreateUserAsync(string userName, string firstName, string lastName, string password)
         {
             var user = new ApplicationUser

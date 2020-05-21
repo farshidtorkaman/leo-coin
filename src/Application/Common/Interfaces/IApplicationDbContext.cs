@@ -28,6 +28,10 @@ namespace Crypto.Application.Common.Interfaces
         DbSet<Purchase> Purchases { get; set; }
         
         DbSet<Sell> Sells { get; set; }
+        
+        DbSet<Ticket> Tickets { get; set; }
+        
+        DbSet<TicketMessage> TicketMessages { get; set; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }

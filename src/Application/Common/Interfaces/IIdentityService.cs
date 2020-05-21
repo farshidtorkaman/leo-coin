@@ -7,6 +7,8 @@ namespace Crypto.Application.Common.Interfaces
     {
         Task<string> GetUserNameAsync(string userId);
 
+        string GetFullName(string userId);
+
         Task<(Result Result, string UserId)> CreateUserAsync(string userName, string firstName, string lastName,
             string password);
 

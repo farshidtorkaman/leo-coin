@@ -1,0 +1,135 @@
+﻿@using System.Globalization
+@using Crypto.Domain.Enums
+@using MD.PersianDateTime.Standard
+@using WebUI.Helpers
+@model Crypto.Application.Tickets.Queries.TicketDetailsVm
+
+@{
+    ViewBag.Title = "جزئیات پیام " + Model.Topic;
+    Layout = "~/Areas/Panel/Views/Shared/_PanelLayout.cshtml";
+
+    var created = new PersianDateTime(Model.Created);
+    var status = EnumHelper<TicketStatus>.GetDisplayValue(Model.Status);
+
+    var index = 1;
+}
+
+<style>
+    /* Chat containers */
+    .chatContainer {
+      clear: both;
+      border: 2px solid #dedede;
+      background-color: #f1f1f1;
+      border-radius: 5px;
+      padding: 10px;
+      margin: 10px 0;
+      width: 50%;
+      float: right;
+    }
+    
+    /* Darker chat container */
+    .darker {
+      border-color: #ccc;
+      background-color: #ddd;
+      float: left !important;
+    }
+    
+    /* Style images */
+    .chatContainer img {
+      float: left;
+      max-width: 60px;
+      width: 100%;
+      margin-right: 20px;
+      border-radius: 50%;
+    }
+    
+    /* Style time text */
+    .time-left {
+      float: left;
+      color: #999;
+    }
+</style>
+
+<div class="card">
+    <div class="card-body">
+        <h6 class="card-title">جزئیات تیکت</h6>
+
+        <div class="form-row">
+            <div class="col-md-4 mb-3">
+                <label for="topic">عنوان</label>
+                <input type="text" class="form-control" id="topic" value="@Model.Topic" disabled>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="created">تاریخ ایجاد</label>
+                <input type="text" class="form-control" id="created" value="@created.ToString(CultureInfo.InvariantCulture)" disabled>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="status">وضعیت</label>
+                <input type="text" class="form-control" id="status" value="@status" disabled>
+            </div>
+        </div>
+
+        <div class="m-t-50" style="display: flow-root">
+            @foreach (var message in Model.Messages)
+            {
+                var persianDate = new PersianDateTime(message.Created);
+                
+                <div class="chatContainer @(index % 2 == 0 ? "darker" : "")">
+                    <p>@Html.Raw(message.Text)</p>
+                    <span class="time-left">@persianDate.ToString(CultureInfo.InvariantCulture)</span>
+                </div>
+
+                index++;
+            }
+        </div>
+        @if (Model.Status == TicketStatus.Open && ViewBag.UserCanReply)
+        {
+            <form asp-action="Reply">
+                <input type="hidden" name="TicketId" asp-for="@Model.Id" />
+                <div class="form-row">
+                    <div class="col-md-10">
+                        <label for="reply">پاسخ</label>
+                        <textarea id="reply" name="Text"></textarea>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" type="submit">ارسال</button>
+
+            </form>
+        }
+    </div>
+</div>
+
+
+@section Scripts
+{
+    <!-- CKEditor -->
+    <script src="~/vendors/ckeditor/ckeditor.js"></script>
+
+    <script>
+    if($('#reply').length) {
+            CKEDITOR.replace('reply', {
+                // Define the toolbar groups as it is a more accessible solution.
+                toolbarGroups: [{
+                    "name": "basicstyles",
+                    "groups": ["basicstyles"]
+                },
+                    {
+                        "name": "links",
+                        "groups": ["links"]
+                    },
+                    {
+                        "name": "paragraph",
+                        "groups": ["list", "blocks"]
+                    },
+                    {
+                        "name": "insert",
+                        "groups": ["insert"]
+                    }
+                ],
+                // Remove the redundant buttons from toolbar groups defined above.
+                removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar'
+            });
+        }
+    </script>
+}
