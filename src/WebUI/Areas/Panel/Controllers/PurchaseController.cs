@@ -35,6 +35,7 @@ namespace WebUI.Areas.Panel.Controllers
 
         [Route("buy/{displayUrl}")]
         [HttpPost]
+        [Authorize(Policy = "FullConfirmation")]
         public async Task<IActionResult> Index(PurchaseCommand command, string displayUrl)
         {
             try

@@ -6,6 +6,7 @@ using Crypto.Infrastructure.Identity;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using WebUI.Models;
 
 namespace WebUI.Controllers
@@ -16,12 +17,15 @@ namespace WebUI.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IIdentityService _identityService;
+        private readonly ILogger<UserController> _logger;
 
-        public UserController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, IIdentityService identityService)
+        public UserController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager,
+            IIdentityService identityService, ILogger<UserController> logger)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _identityService = identityService;
+            _logger = logger;
         }
 
         [Route("login")]
@@ -52,9 +56,9 @@ namespace WebUI.Controllers
                 await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
             if (result.Succeeded)
             {
-                //_logger.LogInformation("User with Email " + model.Email + " has Logged In");
+                _logger.LogInformation("User with Email " + model.Email + " has Logged In");
                 if (returnUrl == "/")
-                    return RedirectToAction("Index", "Dashboard", new { area = "Panel" });
+                    return RedirectToAction("Index", "Dashboard", new {area = "Panel"});
                 return LocalRedirect(returnUrl);
             }
 
@@ -64,21 +68,22 @@ namespace WebUI.Controllers
                 if (!user.EmailConfirmed)
                 {
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var callBackUrl = Url.Action("ConfirmEmail", "User", new { userId = user.Id, code },
+                    var callBackUrl = Url.Action("ConfirmEmail", "User", new {userId = user.Id, code},
                         Request.Scheme);
 
                     await _identityService.SendConfirmationEmailAsync(model.Email, callBackUrl);
 
-                    return RedirectToAction("NotAllowed", new { email = user.Email });
+                    return RedirectToAction("NotAllowed", new {email = user.Email});
                 }
             }
+
             //if (result.RequiresTwoFactor)
             //{
             //    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
             //}
             if (result.IsLockedOut)
             {
-                //_logger.LogWarning("User account locked out.");
+                _logger.LogWarning("User account with email " + model.Email + "locked out.");
                 return RedirectToPage("./Lockout");
             }
 
@@ -157,15 +162,16 @@ namespace WebUI.Controllers
             returnUrl ??= Url.Content("~/");
             if (!ModelState.IsValid) return View(model);
 
-            var (result, userId) = await _identityService.CreateUserAsync(model.Email, model.FirstName, model.LastName, model.Password);
+            var (result, userId) =
+                await _identityService.CreateUserAsync(model.Email, model.FirstName, model.LastName, model.Password);
             var user = await _userManager.FindByIdAsync(userId);
 
             if (result.Succeeded)
             {
-                //_logger.LogInformation("user with email " + model.Email + " has created a new account");
+                _logger.LogInformation("user with email " + model.Email + " has created a new account");
 
                 var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                var callBackUrl = Url.Action("ConfirmEmail", "User", new { userId, code },
+                var callBackUrl = Url.Action("ConfirmEmail", "User", new {userId, code},
                     Request.Scheme);
 
                 //await _emailSender.SendEmailAsync(model.Email, "تاییدیه ایمیل", "روی لینک رو به رو کلیک کنید : " + callBackUrl);
@@ -173,7 +179,7 @@ namespace WebUI.Controllers
 
                 if (_userManager.Options.SignIn.RequireConfirmedEmail)
                 {
-                    return RedirectToAction("RegisterConfirmation", new { email = model.Email });
+                    return RedirectToAction("RegisterConfirmation", new {email = model.Email});
                 }
 
                 await _signInManager.SignInAsync(user, isPersistent: false);
@@ -208,9 +214,9 @@ namespace WebUI.Controllers
             var result = await _userManager.ConfirmEmailAsync(user, code);
 
             if (result.Succeeded)
-                return RedirectToAction("Index", "Dashboard", new { area = "Panel" });
+                return RedirectToAction("Index", "Dashboard", new {area = "Panel"});
 
-            // _logger.LogError("error occured while confirming email " + user.Email + " with error : " + result.Errors);
+            _logger.LogError("error occured while confirming email " + user.Email + " with error : " + result.Errors);
             return View();
         }
 

@@ -47,6 +47,12 @@ namespace WebUI
 
             services.Configure<PayConfiguration>(option => Configuration.GetSection("PayConfig").Bind(option));
             services.AddPay();
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("FullConfirmation", policy =>
+                    policy.RequireClaim("ConfirmationType", "PhoneNumber", "Tell", "NationalCard", "BankCard", "Applicant"));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

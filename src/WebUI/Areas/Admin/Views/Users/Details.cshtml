@@ -1,0 +1,268 @@
+﻿@using Crypto.Domain.Enums
+@model Crypto.Application.Admin.Users.Queries.UserDetailVm
+
+@{
+    ViewBag.Title = "title";
+    Layout = "~/Areas/Panel/Views/Shared/_PanelLayout.cshtml";
+}
+<!-- LightBox -->
+<link rel="stylesheet" href="~/vendors/lightbox/magnific-popup.css" type="text/css">
+<style>
+    .table-striped td {
+        text-align: center;
+    }
+    .table-striped img {
+        width: 15%;
+    }
+</style>
+
+<div class="row row-sm">
+<div class="col-md-7">
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped">
+
+                    <tbody>
+                    <tr>
+                        <td>تلفن ثابت</td>
+                        <td>
+                            @Model.Tell
+                        </td>
+
+                        @switch (Model.TellStatus)
+                        {
+                            case Status.NotSent:
+                                <td></td>
+                                break;
+                            case Status.Sent:
+                                <td>
+                                    <button class="btn btn-success">تایید</button>
+                                    <button class="btn btn-danger">رد</button>
+                                </td>
+                                break;
+                            case Status.Confirmed:
+                                <td class="text text-success">تایید شده</td>
+                                break;
+                            case Status.Rejected:
+                                <td class="text text-danger">رد شده</td>
+                                break;
+                            default:
+                                <td>نامشخص</td>
+                                break;
+                        }
+                    </tr>
+                    <tr>
+                        <td>کارت ملی</td>
+                        <td>
+                            @if (Model.NationalCardImage == "-")
+                            {
+                                <text>-</text>
+                            }
+                            else
+                            {
+                                <a class="image-popup" href="@Model.NationalCardImage">
+                                    <img src="@Model.NationalCardImage" class="img-fluid" alt="image">
+                                </a>
+                            }
+                        </td>
+                        @switch (Model.NationalCardStatus)
+                        {
+                            case Status.NotSent:
+                                <td></td>
+                                break;
+                            case Status.Sent:
+                                <td>
+                                    <button class="btn btn-success">تایید</button>
+                                    <button class="btn btn-danger">رد</button>
+                                </td>
+                                break;
+                            case Status.Confirmed:
+                                <td class="text text-success">تایید شده</td>
+                                break;
+                            case Status.Rejected:
+                                <td class="text text-danger">رد شده</td>
+                                break;
+                            default:
+                                <td>نامشخص</td>
+                                break;
+                        }
+                    </tr>
+                    <tr>
+                        <td>کارت بانکی</td>
+                        <td>
+                            @if (Model.BankCardImage == "-")
+                            {
+                                <text>-</text>
+                            }
+                            else
+                            {
+                                <a class="image-popup" href="@Model.BankCardImage">
+                                    <img src="@Model.BankCardImage" class="img-fluid" alt="image">
+                                </a>
+                            }
+                        </td>
+                        @switch (Model.BankCardStatus)
+                        {
+                            case Status.NotSent:
+                                <td></td>
+                                break;
+                            case Status.Sent:
+                                <td>
+                                    <button class="btn btn-success">تایید</button>
+                                    <button class="btn btn-danger">رد</button>
+                                </td>
+                                break;
+                            case Status.Confirmed:
+                                <td class="text text-success">تایید شده</td>
+                                break;
+                            case Status.Rejected:
+                                <td class="text text-danger">رد شده</td>
+                                break;
+                            default:
+                                <td>نامشخص</td>
+                                break;
+                        }
+                    </tr>
+                    <tr>
+                        <td>درخواست نامه</td>
+                        <td>
+                            @if (Model.ApplicantImage == "-")
+                            {
+                                <text>-</text>
+                            }
+                            else
+                            {
+                                <a class="image-popup" href="@Model.ApplicantImage">
+                                    <img src="@Model.ApplicantImage" class="img-fluid" alt="image">
+                                </a>
+                            }
+                        </td>
+                        @switch (Model.ApplicantStatus)
+                        {
+                            case Status.NotSent:
+                                <td></td>
+                                break;
+                            case Status.Sent:
+                                <td>
+                                    <button class="btn btn-success">تایید</button>
+                                    <button class="btn btn-danger">رد</button>
+                                </td>
+                                break;
+                            case Status.Confirmed:
+                                <td class="text text-success">تایید شده</td>
+                                break;
+                            case Status.Rejected:
+                                <td class="text text-danger">رد شده</td>
+                                break;
+                            default:
+                                <td>نامشخص</td>
+                                break;
+                        }
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header d-flex justify-content-between">
+            اطلاعات بانکی
+        </div>
+        <div class="card-body pt-2">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item d-flex justify-content-between align-items-center p-l-r-0">
+
+                    <h6 class="m-b-0 primary-font">شماره کارت</h6>
+
+                    <h6>@Model.BankCardNumber</h6>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center p-l-r-0">
+
+                    <h6 class="m-b-0 primary-font">نام بانک</h6>
+
+                    <h6>@Model.BankName</h6>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center p-l-r-0">
+
+                    <h6 class="m-b-0 primary-font">نام دارنده حساب</h6>
+
+                    <h6>@Model.AccountOwnerName</h6>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center p-l-r-0">
+
+                    <h6 class="m-b-0 primary-font">شماره حساب</h6>
+
+                    <h6>@Model.AccountNumber</h6>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center p-l-r-0">
+
+                    <h6 class="m-b-0 primary-font">شماره شبا</h6>
+
+                    <h6>IR-@Model.Sheba</h6>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="col-md-5">
+    <div class="card">
+        <div class="card-body">
+            <h6 class="card-title d-flex justify-content-between align-items-center">
+                اطلاعات
+            </h6>
+            <div class="row mb-2">
+                <div class="col-6 text-muted">نام:</div>
+                <div class="col-6">@Model.FirstName</div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-6 text-muted">نام خانوادگی:</div>
+                <div class="col-6">@Model.LastName</div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-6 text-muted">شماره تلفن:</div>
+                <div class="col-6">@Model.PhoneNumber</div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-6 text-muted">تلفن ثابت:</div>
+                <div class="col-6">@Model.Tell</div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-6 text-muted">استان:</div>
+                <div class="col-6">@Model.Province</div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-6 text-muted">شهر:</div>
+                <div class="col-6">@Model.City</div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-6 text-muted">آدرس:</div>
+                <div class="col-6">@Model.Address</div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-6 text-muted">کد پستی:</div>
+                <div class="col-6" dir="ltr">@Model.PostalCode</div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-6 text-muted">ایمیل:</div>
+                <div class="col-6">@Model.Email</div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-6 text-muted">کد ملی:</div>
+                <div class="col-6">@Model.NationalCode</div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-6 text-muted">تاریخ تولد:</div>
+                <div class="col-6">@Model.BirthDate</div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+@section Scripts
+{
+    <!-- LightBox -->
+    <script src="~/vendors/lightbox/jquery.magnific-popup.min.js"></script>
+    <script src="~/assets/js/examples/lightbox.js"></script>
+}

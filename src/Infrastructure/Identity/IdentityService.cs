@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Crypto.Application.Common.Interfaces;
 using Crypto.Application.Common.Models;
 using Microsoft.AspNetCore.Identity;
@@ -65,7 +66,11 @@ namespace Crypto.Infrastructure.Identity
             try
             {
                 var user = await _userManager.FindByIdAsync(userId);
-                return await _userManager.VerifyChangePhoneNumberTokenAsync(user, token, phoneNumber);
+                var result = await _userManager.VerifyChangePhoneNumberTokenAsync(user, token, phoneNumber);
+                if (!result) return false;
+                
+                await _userManager.AddClaimAsync(user, new Claim("ConfirmationType", "PhoneNumber"));
+                return true;
             }
             catch
             {
@@ -166,6 +171,11 @@ namespace Crypto.Infrastructure.Identity
 
             var result = await _userManager.ChangePasswordAsync(user, oldPassword, newPassword);
             return result.ToApplicationResult();
+        }
+
+        public async Task<List<string>> GetUsers()
+        {
+            return await _userManager.Users.Select(f => f.Id).ToListAsync();
         }
     }
 }

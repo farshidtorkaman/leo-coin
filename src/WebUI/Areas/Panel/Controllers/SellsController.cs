@@ -4,6 +4,7 @@ using Crypto.Application.Common.Interfaces;
 using Crypto.Application.Currencies.Queries;
 using Crypto.Application.Sells.Commands;
 using Crypto.Infrastructure.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ControllerBase = WebUI.Controllers.ControllerBase;
@@ -12,6 +13,7 @@ namespace WebUI.Areas.Panel.Controllers
 {
     [Area("panel")]
     [Route("panel")]
+    [Authorize]
     public class SellsController : ControllerBase
     {
         [Route("sell/{displayUrl}")]
@@ -33,6 +35,7 @@ namespace WebUI.Areas.Panel.Controllers
 
         [Route("sell/{displayUrl}")]
         [HttpPost]
+        [Authorize(Policy = "FullConfirmation")]
         public async Task<IActionResult> Index(SellCommand command, string displayUrl)
         {
             try

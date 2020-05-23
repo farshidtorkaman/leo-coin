@@ -1,4 +1,5 @@
-﻿using Crypto.Application.Common.Models;
+﻿using System.Collections.Generic;
+using Crypto.Application.Common.Models;
 using System.Threading.Tasks;
 
 namespace Crypto.Application.Common.Interfaces
@@ -24,5 +25,7 @@ namespace Crypto.Application.Common.Interfaces
         Task<bool> ConfirmPhoneAsync(string userId, string phoneNumber, string token);
         
         Task<Result> ChangePasswordAsync(string userId, string oldPassword, string newPassword);
+
+        Task<List<string>> GetUsers();
     }
 }

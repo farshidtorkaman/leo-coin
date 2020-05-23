@@ -79,11 +79,199 @@
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
+    <Content Update="wwwroot\assets\css\app.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\assets\css\font\primary-aviny.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\assets\css\font\primary-dastnevis.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\assets\css\font\primary-droid-naskh.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\assets\css\font\primary-dubai.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\assets\css\font\primary-gandom.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\assets\css\font\primary-helvetica-neue.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\assets\css\font\primary-iran-sans.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\assets\css\font\primary-iran-yekan.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\assets\css\font\primary-lalezar.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\assets\css\font\primary-myriad.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\assets\css\font\primary-neirizi.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\assets\css\font\primary-palatino-sans.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\assets\css\font\primary-sahel.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\assets\css\font\primary-shabnam.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\assets\css\font\primary-vazir.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\assets\css\font\primary-yekan.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\assets\css\font\secondary-aviny.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\assets\css\font\secondary-dastnevis.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\assets\css\font\secondary-droid-naskh.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\assets\css\font\secondary-dubai.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\assets\css\font\secondary-gandom.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\assets\css\font\secondary-helvetica-neue.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\assets\css\font\secondary-iran-sans.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\assets\css\font\secondary-iran-yekan.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\assets\css\font\secondary-lalezar.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\assets\css\font\secondary-myriad.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\assets\css\font\secondary-neirizi.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\assets\css\font\secondary-palatino-sans.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\assets\css\font\secondary-sahel.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\assets\css\font\secondary-shabnam.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\assets\css\font\secondary-vazir.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\assets\css\font\secondary-yekan.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\assets\css\chat.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Areas\Admin\Pages\Dashboard\Index.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Areas\Admin\Pages\Role\Create.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Areas\Admin\Views\Users\Index.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Areas\Admin\Views\Users\Details.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="wwwroot\users" />
     <Folder Include="wwwroot\vendors\mddatepicker" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\assets\css\app.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\css\font\primary-aviny.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\css\font\primary-dastnevis.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\css\font\primary-droid-naskh.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\css\font\primary-dubai.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\css\font\primary-gandom.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\css\font\primary-helvetica-neue.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\css\font\primary-iran-sans.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\css\font\primary-iran-yekan.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\css\font\primary-lalezar.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\css\font\primary-myriad.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\css\font\primary-neirizi.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\css\font\primary-palatino-sans.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\css\font\primary-sahel.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\css\font\primary-shabnam.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\css\font\primary-vazir.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\css\font\primary-yekan.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\css\font\secondary-aviny.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\css\font\secondary-dastnevis.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\css\font\secondary-droid-naskh.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\css\font\secondary-dubai.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\css\font\secondary-gandom.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\css\font\secondary-helvetica-neue.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\css\font\secondary-iran-sans.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\css\font\secondary-iran-yekan.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\css\font\secondary-lalezar.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\css\font\secondary-myriad.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\css\font\secondary-neirizi.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\css\font\secondary-palatino-sans.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\css\font\secondary-sahel.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\css\font\secondary-shabnam.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\css\font\secondary-vazir.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\css\font\secondary-yekan.css" />
   </ItemGroup>
 
   <PropertyGroup>
