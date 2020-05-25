@@ -20,7 +20,6 @@ $("#ProvinceId").change(function(){
                             title = value;
                         }
                     });
-                    console.log(id + ": " + title);
                     $("#CityId").append("<option value='" + id + "'>" + title + " </option>");
                 })
             },
@@ -29,4 +28,48 @@ $("#ProvinceId").change(function(){
             }
         })
     }
+});
+
+$(".confirmPurchase").click(function(){
+    $(".modal-content").empty();
+    let fullname = $(this).data("fullname");
+    let amount = $(this).data("amount");
+    let purchaseId = $(this).data("purchaseid");
+    $.get("/admin/confirm_purchase", { purchaseId: purchaseId, fullName: fullname, amount: amount}, function(data){
+        $(".modal-content").append(data);
+        $(".confirmRejectModal").modal('show');
+    })
+})
+
+$(".rejectPurchase").click(function(){
+    $(".modal-content").empty();
+    let fullname = $(this).data("fullname");
+    let amount = $(this).data("amount");
+    let purchaseId = $(this).data("purchaseid");
+    $.get("/admin/reject_purchase", { purchaseId: purchaseId, fullName: fullname, amount: amount}, function(data){
+        $(".modal-content").append(data);
+        $(".confirmRejectModal").modal('show');
+    })
+})
+
+$(".confirmSell").click(function(){
+    $(".modal-content").empty();
+    let fullname = $(this).data("fullname");
+    let amount = $(this).data("amount");
+    let sellId = $(this).data("sellid");
+    $.get("/admin/confirm_sell", { sellId: sellId, fullName: fullname, amount: amount}, function(data){
+        $(".modal-content").append(data);
+        $(".confirmRejectModal").modal('show');
+    })
+})
+
+$(".rejectSell").click(function(){
+    $(".modal-content").empty();
+    let fullname = $(this).data("fullname");
+    let amount = $(this).data("amount");
+    let sellId = $(this).data("sellid");
+    $.get("/admin/reject_sell", { sellId: sellId, fullName: fullname, amount: amount}, function(data){
+        $(".modal-content").append(data);
+        $(".confirmRejectModal").modal('show');
+    })
 })

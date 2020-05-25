@@ -69,7 +69,7 @@ namespace Crypto.Infrastructure.Identity
                 var result = await _userManager.VerifyChangePhoneNumberTokenAsync(user, token, phoneNumber);
                 if (!result) return false;
                 
-                await _userManager.AddClaimAsync(user, new Claim("ConfirmationType", "PhoneNumber"));
+                await AddConfirmsClaim(user.Id, "PhoneNumber");
                 return true;
             }
             catch
@@ -89,6 +89,18 @@ namespace Crypto.Infrastructure.Identity
         {
             var profile = _context.UsersProfiles.FirstOrDefault(f => f.UserId == userId);
             return profile?.FirstName + " " + profile?.LastName;
+        }
+
+        public string GetSheba(string userId)
+        {
+            var financial = _context.FinancialInformation.FirstOrDefault(f => f.UserId == userId);
+            return financial?.Sheba;
+        }
+
+        public string GetCardNumber(string userId)
+        {
+            var financial = _context.FinancialInformation.FirstOrDefault(f => f.UserId == userId);
+            return financial?.CardNumber;
         }
 
         public async Task<(Result Result, string UserId)> CreateUserAsync(string userName, string firstName, string lastName, string password)
@@ -176,6 +188,12 @@ namespace Crypto.Infrastructure.Identity
         public async Task<List<string>> GetUsers()
         {
             return await _userManager.Users.Select(f => f.Id).ToListAsync();
+        }
+
+        public async Task AddConfirmsClaim(string userId, string value)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            await _userManager.AddClaimAsync(user, new Claim("ConfirmationType", value));
         }
     }
 }

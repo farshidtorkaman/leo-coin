@@ -26,6 +26,7 @@ namespace WebUI.Areas.Admin.Controllers
 
             try
             {
+                ViewData["UserId"] = id;
                 return View(await Mediator.Send(new GetUserDetailQuery {UserId = id}));
             }
             catch (NotFoundException exception)

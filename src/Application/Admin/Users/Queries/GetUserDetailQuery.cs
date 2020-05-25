@@ -57,17 +57,17 @@ namespace Crypto.Application.Admin.Users.Queries
 
             user.NationalCardImage = document?.NationalCardImage ?? "-";
             user.NationalCardStatus = document?.NationalCardImage == null ? Status.NotSent :
-                document.NationalCardImageStatus == null ? Status.Sent :
+                document.NationalCardImageStatus == DocumentImagesStatus.Sent ? Status.Sent :
                 document.NationalCardImageStatus == DocumentImagesStatus.Confirmed ? Status.Confirmed : Status.Rejected;
 
             user.BankCardImage = document?.BankCardImage ?? "-";
             user.BankCardStatus = document?.BankCardImage == null ? Status.NotSent :
-                document.BankCardImageStatus == null ? Status.Sent :
+                document.BankCardImageStatus == DocumentImagesStatus.Sent ? Status.Sent :
                 document.BankCardImageStatus == DocumentImagesStatus.Confirmed ? Status.Confirmed : Status.Rejected;
 
             user.ApplicantImage = document?.ApplicantImage ?? "-";
             user.ApplicantStatus = document?.ApplicantImage == null ? Status.NotSent :
-                document.ApplicantImageStatus == null ? Status.Sent :
+                document.ApplicantImageStatus == DocumentImagesStatus.Sent ? Status.Sent :
                 document.ApplicantImageStatus == DocumentImagesStatus.Confirmed ? Status.Confirmed : Status.Rejected;
 
             var financial =

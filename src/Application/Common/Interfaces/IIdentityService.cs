@@ -10,6 +10,10 @@ namespace Crypto.Application.Common.Interfaces
 
         string GetFullName(string userId);
 
+        string GetSheba(string userId);
+
+        string GetCardNumber(string userId);
+
         Task<(Result Result, string UserId)> CreateUserAsync(string userName, string firstName, string lastName,
             string password);
 
@@ -27,5 +31,7 @@ namespace Crypto.Application.Common.Interfaces
         Task<Result> ChangePasswordAsync(string userId, string oldPassword, string newPassword);
 
         Task<List<string>> GetUsers();
+
+        Task AddConfirmsClaim(string userId, string value);
     }
 }

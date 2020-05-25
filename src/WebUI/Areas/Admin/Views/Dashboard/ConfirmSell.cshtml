@@ -1,0 +1,22 @@
+﻿<div class="modal-header">
+    <h5 class="modal-title" id="header-title">تایید فروش</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<form asp-action="ConfirmSell">
+    <input type="hidden" name="sellId" value="@ViewData["SellId"]"/>
+    <div class="modal-body">
+        <p>نام و نام خانوادگی : @ViewData["FullName"]</p>
+        <p>مقدار : @ViewData["Amount"]</p>
+        <hr/>
+        <div class="form-group">
+            <label for="transactionCode" class="col-form-label">کد رهگیری :</label>
+            <input required type="text" class="form-control text-right" name="transactionCode" id="transactionCode">
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-success">ثبت</button>
+
+    </div>
+</form>

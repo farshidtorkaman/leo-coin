@@ -37,8 +37,8 @@
                                 break;
                             case Status.Sent:
                                 <td>
-                                    <button class="btn btn-success">تایید</button>
-                                    <button class="btn btn-danger">رد</button>
+                                    <button class="btn btn-success confirm" data-title="تلفن ثابت" data-url="tell">تایید</button>
+                                    <button class="btn btn-danger reject" data-title="تلفن ثابت" data-url="tell">رد</button>
                                 </td>
                                 break;
                             case Status.Confirmed:
@@ -73,8 +73,8 @@
                                 break;
                             case Status.Sent:
                                 <td>
-                                    <button class="btn btn-success">تایید</button>
-                                    <button class="btn btn-danger">رد</button>
+                                    <button class="btn btn-success confirm" data-title="کارت ملی" data-url="national_card">تایید</button>
+                                    <button class="btn btn-danger reject" data-title="کارت ملی" data-url="national_card">رد</button>
                                 </td>
                                 break;
                             case Status.Confirmed:
@@ -109,8 +109,8 @@
                                 break;
                             case Status.Sent:
                                 <td>
-                                    <button class="btn btn-success">تایید</button>
-                                    <button class="btn btn-danger">رد</button>
+                                    <button class="btn btn-success confirm" data-title="کارت بانکی" data-url="bank_card">تایید</button>
+                                    <button class="btn btn-danger reject" data-title="کارت بانکی" data-url="bank_card">رد</button>
                                 </td>
                                 break;
                             case Status.Confirmed:
@@ -145,8 +145,8 @@
                                 break;
                             case Status.Sent:
                                 <td>
-                                    <button class="btn btn-success">تایید</button>
-                                    <button class="btn btn-danger">رد</button>
+                                    <button class="btn btn-success confirm" data-title="درخواست نامه" data-url="applicant">تایید</button>
+                                    <button class="btn btn-danger reject" data-title="درخواست نامه" data-url="applicant">رد</button>
                                 </td>
                                 break;
                             case Status.Confirmed:
@@ -265,4 +265,88 @@
     <!-- LightBox -->
     <script src="~/vendors/lightbox/jquery.magnific-popup.min.js"></script>
     <script src="~/assets/js/examples/lightbox.js"></script>
+    
+    <script>
+        $('.confirm').on('click', function () {
+            let title = $(this).data('title');
+            let url = $(this).data('url');
+            swal({
+                title: "تایید " + title,
+                icon: "warning",
+                buttons: {
+                    confirm : 'بله',
+                    cancel : 'انصراف'
+                },
+                dangerMode: true
+            })
+                .then(function(willDelete) {
+                    if (willDelete) {
+                        $.ajax({
+                            url: '/admin/confirm/' + url,
+                            data: { userId: '@ViewData["UserId"]', isConfirm: true },
+                            type: 'post',
+                            success: function(){
+                                swal(title + " مورد نظر تایید شد", {
+                                    icon: "success",
+                                    button: "باشه"
+                                })
+                                    .then(function(){
+                                        location.reload();
+                                    });
+                            },
+                            error: function(){
+                                swal("خطایی رخ داد!", {
+                                    icon: "error",
+                                    button: "باشه"
+                                });
+                            }
+                        });
+                    }
+                    else {
+                        swal.close()
+                    }
+                });
+        });
+        
+        $('.reject').on('click', function () {
+            let title = $(this).data('title');
+            let url = $(this).data('url');
+            swal({
+                title: "رد " + title,
+                icon: "error",
+                buttons: {
+                    confirm : 'بله',
+                    cancel : 'انصراف'
+                },
+                dangerMode: true
+            })
+                .then(function(willDelete) {
+                    if (willDelete) {
+                        $.ajax({
+                            url: '/admin/confirm/' + url,
+                            data: { userId: '@ViewData["UserId"]', isConfirm: false },
+                            type: 'post',
+                            success: function(){
+                                swal(title + " مورد نظر رد شد", {
+                                    icon: "success",
+                                    button: "باشه"
+                                })
+                                    .then(function(){
+                                        location.reload();
+                                    });
+                            },
+                            error: function(){
+                                swal("خطایی رخ داد!", {
+                                    icon: "error",
+                                    button: "باشه"
+                                });
+                            }
+                        });
+                    }
+                    else {
+                        swal.close()
+                    }
+                });
+        });
+    </script>
 }

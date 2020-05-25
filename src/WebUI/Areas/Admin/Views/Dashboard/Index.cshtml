@@ -1,4 +1,7 @@
-﻿@{
+﻿@using Crypto.Domain.Enums
+@model WebUI.Areas.Admin.Controllers.DashboardViewModel
+
+@{
     ViewBag.Title = "title";
     Layout = "~/Areas/Panel/Views/Shared/_PanelLayout.cshtml";
 }
@@ -30,7 +33,7 @@
 
             <div class="col-xl-3 col-lg-6 col-lg-6 col-sm-12">
                 <div class="card border mb-0">
-                    <a asp-action="Index" asp-controller="Users" asp-area="Admin">
+                    <a asp-area="Admin" asp-controller="Users" asp-action="Index">
                         <div class="card-body">
                             <div class="d-flex align-items-center mb-3">
                                 <div>
@@ -91,6 +94,123 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h6 class="card-title">خریدهای اخیر</h6>
+                <div class="table-responsive">
+                    <table class="table m-b-0">
+                        <thead>
+                        <tr>
+                            <th>کاربر</th>
+                            <th>مقدار</th>
+                            <th>کیف پول</th>
+                            <th>مبلغ پرداختی</th>
+                            <th>کد رهگیری</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var purchase in Model.RecentPurchases)
+                        {
+                            <tr>
+                                <td>@purchase.UserFullName</td>
+                                <td>@purchase.Amount</td>
+                                <td>@purchase.WalletId</td>
+                                <td>@purchase.PricePaid</td>
+                                <td>@purchase.TrackingCode</td>
+                                @switch (purchase.Status)
+                                {
+                                    case PurchaseStatus.InProgress:
+                                        <td>
+                                            <button class="btn btn-success confirmPurchase" data-purchaseId="@purchase.PurchaseId" data-fullname="@purchase.UserFullName" data-amount="@purchase.Amount">تایید</button>
+                                            <button class="btn btn-danger rejectPurchase" data-purchaseId="@purchase.PurchaseId" data-fullname="@purchase.UserFullName" data-amount="@purchase.Amount">رد</button>
+                                        </td>
+                                        break;
+                                    case PurchaseStatus.Done:
+                                        <td class="text text-success">تایید شده</td>
+                                        break;
+                                    case PurchaseStatus.Rejected:
+                                        <td class="text text-danger">رد شده</td>
+                                        break;
+                                    default:
+                                        <td>نامشخص</td>
+                                        break;
+                                }
+
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h6 class="card-title">فروش های اخیر</h6>
+                <div class="table-responsive">
+                    <table class="table m-b-0">
+                        <thead>
+                        <tr>
+                            <th>کاربر</th>
+                            <th>مقدار</th>
+                            <th>لینک تراکنش</th>
+                            <th>شماره شبا</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var sell in Model.RecentSells)
+                        {
+                            <tr>
+                                <td>@sell.UserFullName</td>
+                                <td>@sell.Amount</td>
+                                <td>@sell.TransactionLink</td>
+                                <td>IR-@sell.Sheba</td>
+                                @switch (sell.Status)
+                                {
+                                    case PurchaseStatus.InProgress:
+                                        <td>
+                                            <button class="btn btn-success confirmSell" data-sellId="@sell.SellId" data-fullname="@sell.UserFullName" data-amount="@sell.Amount">تایید</button>
+                                            <button class="btn btn-danger rejectSell" data-sellId="@sell.SellId" data-fullname="@sell.UserFullName" data-amount="@sell.Amount">رد</button>
+                                        </td>
+                                        break;
+                                    case PurchaseStatus.Done:
+                                        <td class="text text-success">تایید شده</td>
+                                        break;
+                                    case PurchaseStatus.Rejected:
+                                        <td class="text text-danger">رد شده</td>
+                                        break;
+                                    default:
+                                        <td>نامشخص</td>
+                                        break;
+                                }
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade confirmRejectModal" id="content-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
         </div>
     </div>
 </div>
