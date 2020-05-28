@@ -14,6 +14,7 @@ namespace Crypto.Application.Tickets.Queries
         public DateTime Created { get; set; }
         public TicketStatus Status { get; set; }
         public bool UserCanNotReply { get; set; }
+        public string CreatedBy { get; set; }
         public List<TicketMessageVm> Messages { get; set; }
     }
 

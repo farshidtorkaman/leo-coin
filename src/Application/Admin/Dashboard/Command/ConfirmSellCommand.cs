@@ -34,6 +34,10 @@ namespace Crypto.Application.Admin.Dashboard.Command
             sell.TrackingCode = request.TransactionCode;
             sell.Status = PurchaseStatus.Done;
             
+            var currency =
+                await _context.Currencies.FirstOrDefaultAsync(f => f.Id == sell.CurrencyId, cancellationToken);
+            currency.Stock += sell.Amount;
+            
             await _context.SaveChangesAsync(cancellationToken);
             
             return Unit.Value;

@@ -33,5 +33,9 @@ namespace Crypto.Application.Common.Interfaces
         Task<List<string>> GetUsers();
 
         Task AddConfirmsClaim(string userId, string value);
+
+        Task RemoveConfirmsClaim(string userId, string value);
+
+        Task<bool> IsInRoleAsync(string userId, string role);
     }
 }

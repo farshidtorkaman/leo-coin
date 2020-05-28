@@ -195,5 +195,17 @@ namespace Crypto.Infrastructure.Identity
             var user = await _userManager.FindByIdAsync(userId);
             await _userManager.AddClaimAsync(user, new Claim("ConfirmationType", value));
         }
+
+        public async Task RemoveConfirmsClaim(string userId, string value)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            await _userManager.RemoveClaimAsync(user, new Claim("ConfirmationType", value));
+        }
+
+        public async Task<bool> IsInRoleAsync(string userId, string role)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            return await _userManager.IsInRoleAsync(user, role);
+        }
     }
 }

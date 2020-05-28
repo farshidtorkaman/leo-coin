@@ -1,10 +1,12 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using Crypto.Application.Admin.Tickets;
 using Crypto.Application.Common.Exceptions;
 using Crypto.Application.Common.Interfaces;
 using Crypto.Application.Tickets.Commands.CreateTicket;
 using Crypto.Application.Tickets.Commands.ReplyTicket;
 using Crypto.Application.Tickets.Queries;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ControllerBase = WebUI.Controllers.ControllerBase;
 
@@ -12,6 +14,7 @@ namespace WebUI.Areas.Panel.Controllers
 {
     [Area("panel")]
     [Route("panel/tickets")]
+    [Authorize]
     public class TicketsController : ControllerBase
     {
         private readonly ICurrentUserService _currentUserService;
@@ -24,7 +27,9 @@ namespace WebUI.Areas.Panel.Controllers
         [Route("list")]
         public async Task<IActionResult> Index()
         {
-            return View(await Mediator.Send(new GetAllTicketsQuery()));
+            return User.IsInRole("admin")
+                ? View(await Mediator.Send(new GetAllTicketsQuery()))
+                : View(await Mediator.Send(new GetAllUsersTicketsQuery()));
         }
 
         [Route("create")]
@@ -63,10 +68,10 @@ namespace WebUI.Areas.Panel.Controllers
             {
                 if (id == null) return BadRequest();
                 var model = await Mediator.Send(new GetTicketDetailsQuery {Id = (int) id});
-                
+
                 var lastSubmitter = model.Messages.OrderByDescending(f => f.Id).Select(f => f.CreatedBy).First();
                 ViewBag.UserCanReply = lastSubmitter != _currentUserService.UserId;
-                
+
                 return View(model);
             }
             catch (NotFoundException exception)
@@ -77,10 +82,12 @@ namespace WebUI.Areas.Panel.Controllers
 
         [Route("reply")]
         [HttpPost]
-        public async Task<IActionResult> Reply(ReplyTicketCommand command)
+        public async Task<IActionResult> Reply(ReplyTicketCommand command, bool isClosed)
         {
             try
             {
+                if (User.IsInRole("admin"))
+                    command.Close = isClosed;
                 await Mediator.Send(command);
             }
             catch (ValidationException exception)
@@ -97,7 +104,7 @@ namespace WebUI.Areas.Panel.Controllers
             {
                 return NotFound(exception.Message);
             }
-            
+
             return RedirectToAction("Details", new {id = command.TicketId});
         }
     }

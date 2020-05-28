@@ -43,7 +43,9 @@ namespace Crypto.Application.Admin.Users.Queries
                 var document =
                     await _context.Documents.FirstOrDefaultAsync(f => f.UserId == userId, cancellationToken);
                 userVm.NationalCode = document == null ? "-" : document.NationalCode;
-                userVm.BirthDate = document?.BirthDate != null ? new PersianDateTime(document.BirthDate).ToShortDateString() : "-";
+                userVm.BirthDate = document?.BirthDate != null
+                    ? new PersianDateTime(document.BirthDate).ToShortDateString()
+                    : "-";
 
 
                 usersVm.Add(userVm);

@@ -38,7 +38,7 @@
             @foreach (var message in Model.Messages)
             {
                 var persianDate = new PersianDateTime(message.Created);
-                
+
                 <div class="chatContainer @(index % 2 == 0 ? "darker" : "")">
                     <p>@Html.Raw(message.Text)</p>
                     <span class="time-left">@persianDate.ToString(CultureInfo.InvariantCulture)</span>
@@ -50,7 +50,7 @@
         @if (Model.Status == TicketStatus.Open && ViewBag.UserCanReply)
         {
             <form asp-action="Reply">
-                <input type="hidden" name="TicketId" asp-for="@Model.Id" />
+                <input type="hidden" name="TicketId" asp-for="@Model.Id"/>
                 <div class="form-row">
                     <div class="col-md-10">
                         <label for="reply">پاسخ</label>
@@ -58,7 +58,17 @@
                     </div>
                 </div>
 
-                <button class="btn btn-primary" type="submit">ارسال</button>
+                @if (User.IsInRole("admin"))
+                {
+                    <div class="form-check">
+                        @Html.CheckBox("isClosed", false, new { @class = "form-check-input" })
+                        <label class="form-check-label" for="isClosed">
+                            بسته شود؟
+                        </label>
+                    </div>
+                }
+
+                <button class="btn btn-primary mt-4" type="submit">ارسال</button>
 
             </form>
         }

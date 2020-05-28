@@ -33,6 +33,10 @@ namespace Crypto.Application.Admin.Dashboard.Command
 
             purchase.TransactionLink = request.TransactionLink;
             purchase.Status = PurchaseStatus.Done;
+
+            var currency =
+                await _context.Currencies.FirstOrDefaultAsync(f => f.Id == purchase.CurrencyId, cancellationToken);
+            currency.Stock -= purchase.Amount;
             
             await _context.SaveChangesAsync(cancellationToken);
             

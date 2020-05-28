@@ -7,7 +7,7 @@ namespace Crypto.Application.Sells.Commands
         public SellCommandValidator()
         {
             RuleFor(f => f.Amount).NotEmpty().WithMessage("وارد کردن مقدار اجباری است");
-            RuleFor(f => f.TransactionLink).NotEmpty().WithMessage("وارد کردن لینک تراکنش اجباری است");    
+            RuleFor(f => f.TransactionLink).NotEmpty().WithMessage("وارد کردن لینک تراکنش اجباری است");
         }
     }
 }

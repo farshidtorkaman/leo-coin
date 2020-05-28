@@ -31,11 +31,12 @@ namespace Crypto.Application.Users.Profile.Commands
     public class UpdateProfileCommandHandler : IRequestHandler<UpdateProfileCommand, bool>
     {
         private readonly IApplicationDbContext _context;
+        private readonly IIdentityService _identityService;
 
-
-        public UpdateProfileCommandHandler(IApplicationDbContext context)
+        public UpdateProfileCommandHandler(IApplicationDbContext context, IIdentityService identityService)
         {
             _context = context;
+            _identityService = identityService;
         }
 
         public async Task<bool> Handle(UpdateProfileCommand request, CancellationToken cancellationToken)
@@ -46,8 +47,23 @@ namespace Crypto.Application.Users.Profile.Commands
 
             profile.FirstName = request.FirstName;
             profile.LastName = request.LastName;
-            profile.PhoneNumber = request.PhoneNumber;
-            profile.Tell = request.Tell;
+
+            if (profile.PhoneNumber != request.PhoneNumber)
+            {
+                await _identityService.RemoveConfirmsClaim(profile.UserId, "PhoneNumber");
+
+                profile.PhoneNumberConfirmed = null;
+                profile.PhoneNumber = request.PhoneNumber;
+            }
+
+            if (profile.Tell != request.Tell)
+            {
+                await _identityService.RemoveConfirmsClaim(profile.UserId, "Tell");
+
+                profile.TellConfirmed = null;
+                profile.Tell = request.Tell;
+            }
+
             profile.ProvinceId = request.ProvinceId == 0 ? null : request.ProvinceId;
             profile.CityId = request.CityId == 0 ? null : request.CityId;
             profile.Address = request.Address;

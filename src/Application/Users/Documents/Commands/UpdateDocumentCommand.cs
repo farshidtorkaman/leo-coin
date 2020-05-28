@@ -80,8 +80,7 @@ namespace Crypto.Application.Users.Documents.Commands
                         document.NationalCardImageStatus = DocumentImagesStatus.Sent;
                     }
                 }
-
-
+                
                 if (document.BankCardImageStatus == DocumentImagesStatus.Rejected ||
                     document.BankCardImageStatus == null)
                 {
