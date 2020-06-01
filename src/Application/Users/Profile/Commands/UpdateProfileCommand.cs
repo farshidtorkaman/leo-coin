@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Crypto.Application.Common.Exceptions;
 using Crypto.Application.Common.Interfaces;
 using Crypto.Domain.Entities;
+using Crypto.Domain.Enums;
 using MediatR;
 
 namespace Crypto.Application.Users.Profile.Commands
@@ -32,11 +33,13 @@ namespace Crypto.Application.Users.Profile.Commands
     {
         private readonly IApplicationDbContext _context;
         private readonly IIdentityService _identityService;
+        private readonly INotificationService _notificationService;
 
-        public UpdateProfileCommandHandler(IApplicationDbContext context, IIdentityService identityService)
+        public UpdateProfileCommandHandler(IApplicationDbContext context, IIdentityService identityService, INotificationService notificationService)
         {
             _context = context;
             _identityService = identityService;
+            _notificationService = notificationService;
         }
 
         public async Task<bool> Handle(UpdateProfileCommand request, CancellationToken cancellationToken)
@@ -62,6 +65,8 @@ namespace Crypto.Application.Users.Profile.Commands
 
                 profile.TellConfirmed = null;
                 profile.Tell = request.Tell;
+                
+                _notificationService.SendAsync(NotificationType.Tell);
             }
 
             profile.ProvinceId = request.ProvinceId == 0 ? null : request.ProvinceId;

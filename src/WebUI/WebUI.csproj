@@ -288,6 +288,7 @@
     <_ContentIncludedByDefault Remove="wwwroot\assets\css\font\secondary-shabnam.css" />
     <_ContentIncludedByDefault Remove="wwwroot\assets\css\font\secondary-vazir.css" />
     <_ContentIncludedByDefault Remove="wwwroot\assets\css\font\secondary-yekan.css" />
+    <_ContentIncludedByDefault Remove="Areas\Admin\Views\Role\Create.cshtml" />
   </ItemGroup>
 
   <PropertyGroup>

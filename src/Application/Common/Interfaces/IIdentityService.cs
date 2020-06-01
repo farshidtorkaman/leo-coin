@@ -22,7 +22,7 @@ namespace Crypto.Application.Common.Interfaces
         
         Task<Result> DeleteUserAsync(string userId);
 
-        Task<bool> SendConfirmationEmailAsync(string email, string callBackUrl);
+        bool SendConfirmationEmailAsync(string email, string callBackUrl);
 
         Task<bool> SendConfirmationSmsAsync(string userId, string phoneNumber);
 

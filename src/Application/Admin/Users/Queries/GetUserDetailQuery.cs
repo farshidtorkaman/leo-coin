@@ -49,7 +49,7 @@ namespace Crypto.Application.Admin.Users.Queries
             user.PostalCode = profile.PostalCode ?? "-";
 
             var document =
-                await _context.Documents.FirstOrDefaultAsync(f => f.UserId == request.UserId, cancellationToken);
+                await _context.Documents.FirstOrDefaultAsync(f => f.CreatedBy == request.UserId, cancellationToken);
             user.NationalCode = document?.NationalCode ?? "-";
             user.BirthDate = document?.BirthDate != null
                 ? new PersianDateTime(document.BirthDate).ToShortDateString()
@@ -72,7 +72,7 @@ namespace Crypto.Application.Admin.Users.Queries
 
             var financial =
                 await _context.FinancialInformation.Include(f => f.Bank).FirstOrDefaultAsync(
-                    f => f.UserId == request.UserId,
+                    f => f.CreatedBy == request.UserId,
                     cancellationToken);
             user.BankCardNumber = financial?.CardNumber ?? "-";
             user.BankName = financial?.Bank?.Title ?? "-";

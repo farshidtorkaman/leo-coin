@@ -27,7 +27,7 @@ namespace Crypto.Application.Users.Documents.Queries
 
         public async Task<DocumentVm> Handle(GetDocumentQuery request, CancellationToken cancellationToken)
         {
-            return await _context.Documents.Where(f => f.UserId == request.UserId)
+            return await _context.Documents.Where(f => f.CreatedBy == request.UserId)
                 .ProjectTo<DocumentVm>(_mapper.ConfigurationProvider).SingleOrDefaultAsync(cancellationToken);
         }
     }

@@ -92,7 +92,6 @@ namespace WebUI.Areas.Panel.Controllers
         {
             try
             {
-                command.UserId = CurrentUserService.UserId;
                 await Mediator.Send(command);
                 return RedirectToAction("Financial");
             }
@@ -119,7 +118,6 @@ namespace WebUI.Areas.Panel.Controllers
         {
             try
             {
-                command.UserId = CurrentUserService.UserId;
                 await Mediator.Send(command);
                 return RedirectToAction("Documents");
             }

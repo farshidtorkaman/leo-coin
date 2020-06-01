@@ -8,11 +8,9 @@ namespace Crypto.Application.Users.Profile.Commands
 {
     public class CreateProfileCommand : IRequest<int>
     {
-        public string UserId { get; set; }
-
         public string FirstName { get; set; }
-
         public string LastName { get; set; }
+        public string UserId { get; set; }
     }
 
     public class CreateProfileCommandHandler : IRequestHandler<CreateProfileCommand, int>

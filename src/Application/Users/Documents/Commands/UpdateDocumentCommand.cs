@@ -17,18 +17,22 @@ namespace Crypto.Application.Users.Documents.Commands
         public IFormFile NationalCardImage { get; set; }
         public IFormFile BankCardImage { get; set; }
         public IFormFile ApplicantImage { get; set; }
-        public string UserId { get; set; }
     }
 
     public class UpdateDocumentCommandHandler : IRequestHandler<UpdateDocumentCommand>
     {
         private readonly IApplicationDbContext _context;
         private readonly IImageAccessor _imageAccessor;
+        private readonly ICurrentUserService _currentUserService;
+        private readonly INotificationService _notificationService;
 
-        public UpdateDocumentCommandHandler(IApplicationDbContext context, IImageAccessor imageAccessor)
+        public UpdateDocumentCommandHandler(IApplicationDbContext context, IImageAccessor imageAccessor,
+            ICurrentUserService currentUserService, INotificationService notificationService)
         {
             _context = context;
             _imageAccessor = imageAccessor;
+            _currentUserService = currentUserService;
+            _notificationService = notificationService;
         }
 
         public async Task<Unit> Handle(UpdateDocumentCommand request, CancellationToken cancellationToken)
@@ -39,28 +43,36 @@ namespace Crypto.Application.Users.Documents.Commands
                 document = new Document
                 {
                     NationalCode = request.NationalCode,
-                    BirthDate = request.BirthDate,
-                    UserId = request.UserId
+                    BirthDate = request.BirthDate
                 };
                 if (request.NationalCardImage != null)
                 {
                     document.NationalCardImage =
-                        await _imageAccessor.Upload(request.NationalCardImage, request.UserId, "نصویر کارت ملی");
+                        await _imageAccessor.Upload(request.NationalCardImage, _currentUserService.UserId,
+                            "نصویر کارت ملی");
                     document.NationalCardImageStatus = DocumentImagesStatus.Sent;
+
+                    _notificationService.SendAsync(NotificationType.NationalCard);
                 }
 
                 if (request.BankCardImage != null)
                 {
                     document.BankCardImage =
-                        await _imageAccessor.Upload(request.BankCardImage, request.UserId, "نصویر کارت بانکی");
+                        await _imageAccessor.Upload(request.BankCardImage, _currentUserService.UserId,
+                            "نصویر کارت بانکی");
                     document.BankCardImageStatus = DocumentImagesStatus.Sent;
+
+                    _notificationService.SendAsync(NotificationType.BankCard);
                 }
 
                 if (request.ApplicantImage != null)
                 {
                     document.ApplicantImage =
-                        await _imageAccessor.Upload(request.ApplicantImage, request.UserId, "نصویر درخواست نامه");
+                        await _imageAccessor.Upload(request.ApplicantImage, _currentUserService.UserId,
+                            "نصویر درخواست نامه");
                     document.ApplicantImageStatus = DocumentImagesStatus.Sent;
+
+                    _notificationService.SendAsync(NotificationType.Applicant);
                 }
 
                 _context.Documents.Add(document);
@@ -72,23 +84,29 @@ namespace Crypto.Application.Users.Documents.Commands
                 {
                     document.NationalCode = request.NationalCode;
                     document.BirthDate = request.BirthDate;
-                    
+
                     if (request.NationalCardImage != null)
                     {
                         document.NationalCardImage =
-                            await _imageAccessor.Upload(request.NationalCardImage, request.UserId, "تصویر کارت ملی");
+                            await _imageAccessor.Upload(request.NationalCardImage, _currentUserService.UserId,
+                                "تصویر کارت ملی");
                         document.NationalCardImageStatus = DocumentImagesStatus.Sent;
+
+                        _notificationService.SendAsync(NotificationType.NationalCard);
                     }
                 }
-                
+
                 if (document.BankCardImageStatus == DocumentImagesStatus.Rejected ||
                     document.BankCardImageStatus == null)
                 {
                     if (request.BankCardImage != null)
                     {
                         document.BankCardImage =
-                            await _imageAccessor.Upload(request.BankCardImage, request.UserId, "تصویر کارت بانکی");
+                            await _imageAccessor.Upload(request.BankCardImage, _currentUserService.UserId,
+                                "تصویر کارت بانکی");
                         document.BankCardImageStatus = DocumentImagesStatus.Sent;
+
+                        _notificationService.SendAsync(NotificationType.BankCard);
                     }
                 }
 
@@ -99,8 +117,11 @@ namespace Crypto.Application.Users.Documents.Commands
                     if (request.ApplicantImage != null)
                     {
                         document.ApplicantImage =
-                            await _imageAccessor.Upload(request.ApplicantImage, request.UserId, "تصویر درخواست نامه");
+                            await _imageAccessor.Upload(request.ApplicantImage, _currentUserService.UserId,
+                                "تصویر درخواست نامه");
                         document.ApplicantImageStatus = DocumentImagesStatus.Sent;
+
+                        _notificationService.SendAsync(NotificationType.Applicant);
                     }
                 }
             }

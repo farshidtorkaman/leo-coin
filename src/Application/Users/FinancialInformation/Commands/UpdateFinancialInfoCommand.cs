@@ -1,6 +1,5 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using Crypto.Application.Common.Exceptions;
 using Crypto.Application.Common.Interfaces;
 using Crypto.Domain.Entities;
 using MediatR;
@@ -15,7 +14,6 @@ namespace Crypto.Application.Users.FinancialInformation.Commands
         public string AccountOwnerName { get; set; }
         public string AccountNumber { get; set; }
         public string Sheba { get; set; }
-        public string UserId { get; set; }
     }
 
     public class UpdateFinancialInfoCommandHandler : IRequestHandler<UpdateFinancialInfoCommand>
@@ -38,8 +36,7 @@ namespace Crypto.Application.Users.FinancialInformation.Commands
                     BankId = request.BankId == 0 ? null : request.BankId,
                     AccountOwnerName = request.AccountOwnerName,
                     AccountNumber = request.AccountNumber,
-                    Sheba = request.Sheba,
-                    UserId = request.UserId
+                    Sheba = request.Sheba
                 };
                 _context.FinancialInformation.Add(financialInfo);
             }

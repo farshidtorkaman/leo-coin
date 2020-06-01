@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Crypto.Application.Admin.Dashboard.Command;
 using Crypto.Application.Admin.Dashboard.Queries;
+using Crypto.Application.Admin.Notifications.Queries;
 using Crypto.Application.Common.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +21,8 @@ namespace WebUI.Areas.Admin.Controllers
             var model = new DashboardViewModel
             {
                 RecentPurchases = await Mediator.Send(new GetRecentPurchasesQuery()),
-                RecentSells = await Mediator.Send(new GetRecentSellsQuery())
+                RecentSells = await Mediator.Send(new GetRecentSellsQuery()),
+                Notifications = await Mediator.Send(new GetAllNotificationsQuery())
             };
             return View(model);
         }
@@ -130,5 +132,6 @@ namespace WebUI.Areas.Admin.Controllers
     {
         public List<PurchaseVm> RecentPurchases { get; set; }
         public List<SellVm> RecentSells { get; set; }
+        public List<NotificationVm> Notifications { get; set; }
     }
 }

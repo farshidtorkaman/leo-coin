@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Security.Claims;
+using System.Threading;
 using System.Threading.Tasks;
 using Crypto.Application.Common.Interfaces;
 using Crypto.Infrastructure.Identity;
@@ -71,8 +72,9 @@ namespace WebUI.Controllers
                     var callBackUrl = Url.Action("ConfirmEmail", "User", new {userId = user.Id, code},
                         Request.Scheme);
 
-                    await _identityService.SendConfirmationEmailAsync(model.Email, callBackUrl);
-
+                    var thread = new Thread(() => _identityService.SendConfirmationEmailAsync(model.Email, callBackUrl));
+                    thread.Start();
+                    
                     return RedirectToAction("NotAllowed", new {email = user.Email});
                 }
             }
@@ -174,8 +176,8 @@ namespace WebUI.Controllers
                 var callBackUrl = Url.Action("ConfirmEmail", "User", new {userId, code},
                     Request.Scheme);
 
-                //await _emailSender.SendEmailAsync(model.Email, "تاییدیه ایمیل", "روی لینک رو به رو کلیک کنید : " + callBackUrl);
-                await _identityService.SendConfirmationEmailAsync(model.Email, callBackUrl);
+                var thread = new Thread(() => _identityService.SendConfirmationEmailAsync(model.Email, callBackUrl));
+                thread.Start();
 
                 if (_userManager.Options.SignIn.RequireConfirmedEmail)
                 {

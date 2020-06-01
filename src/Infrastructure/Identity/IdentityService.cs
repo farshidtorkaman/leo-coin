@@ -11,6 +11,8 @@ using Crypto.Application.Users.Profile.Commands;
 using Kavenegar;
 using MediatR;
 using System.Security.Claims;
+using System.Threading;
+using Microsoft.Extensions.Logging;
 
 namespace Crypto.Infrastructure.Identity
 {
@@ -20,27 +22,88 @@ namespace Crypto.Infrastructure.Identity
         private readonly IApplicationDbContext _context;
         private readonly IEmailSender _emailSender;
         private readonly IMediator _mediator;
+        private readonly ILogger<IdentityService> _logger;
 
-        public IdentityService(UserManager<ApplicationUser> userManager, IEmailSender emailSender, IMediator mediator, IApplicationDbContext context)
+        public IdentityService(UserManager<ApplicationUser> userManager, IEmailSender emailSender, IMediator mediator,
+            IApplicationDbContext context, ILogger<IdentityService> logger)
         {
             _userManager = userManager;
             _emailSender = emailSender;
             _mediator = mediator;
             _context = context;
+            _logger = logger;
         }
 
-        public async Task<bool> SendConfirmationEmailAsync(string email, string callBackUrl)
+        public bool SendConfirmationEmailAsync(string email, string callBackUrl)
         {
             try
             {
-                await _emailSender.SendEmailAsync(email, "تاییدیه ایمیل", "روی لینک رو به رو کلیک کنید : " + callBackUrl);
+                var htmlMessage = @"<!DOCTYPE html><html lang='fa' dir='rtl'>
+                    <head>
+	<meta charset='UTF-8'>
+	<meta name='viewport' content='width=device-width, initial-scale=1'>
+	<meta http-equiv='X-UA-Compatible' content='ie=edge'>
+	<title>لئو کوین</title>
+
+	<!-- Favicon -->
+	<link rel='shortcut icon' href='assets/media/image/favicon.png'>
+
+	<!-- Theme Color -->
+	<meta name='theme-color' content='#5867dd'>
+</head>
+
+<body style='background-color: #eaf0f7;'>
+
+	<table style='font-family: Arial,sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; background-color: #eaf0f7; margin: 0; line-height: 2; direction: rtl;' bgcolor='#eaf0f7'>
+		<tr style='box-sizing: border-box; margin: 0;'>
+			<td style='box-sizing: border-box; vertical-align: top; display: block !important; max-width: 500px !important; clear: both !important; margin: 0 auto;' valign='top'>
+				<div style='box-sizing: border-box; max-width: 500px; display: block; margin: 0 auto; padding: 50px 0;'>
+					<table width='100%' cellpadding='0' cellspacing='0' itemprop='action' itemscope itemtype='http://schema.org/ConfirmAction' style='box-sizing: border-box; border-radius: 3px; background-color: #fff; margin: 0; border: 1px dashed #4d79f6;' bgcolor='#fff'>
+						<tr style='box-sizing: border-box; margin: 0;'>
+							<td style='box-sizing: border-box; vertical-align: top; margin: 0; padding: 20px;' valign='top'>
+								<meta itemprop='name' content='Confirm Email' style='box-sizing: border-box; margin: 0;'>
+								<table width='100%' cellpadding='0' cellspacing='0' style='box-sizing: border-box; margin: 0;'>
+									<tr>
+										<td><a href='#'><img src='~/assets/media/image/logo-sm.png' alt='image' style='margin-left: auto; margin-right: auto; display:block; margin-bottom: 10px; height: 40px;'></a></td>
+									</tr>
+									<tr style='box-sizing: border-box; margin: 0;'>
+										<td style='box-sizing: border-box; color: #5867dd; font-size: 24px; font-weight: 700; text-align: center; vertical-align: top; margin: 0; padding: 0 0 10px;' valign='top'>به لئو-کوین خوش آمدید</td>
+									</tr>
+									<tr style='box-sizing: border-box; margin: 0;'>
+										<td style='box-sizing: border-box; color: #3f5db3; vertical-align: top; margin: 0; padding: 10px 10px;' valign='top'>لطفا با کلیک بر روی لینک زیر ایمیل خود را تایید کنید.</td>
+									</tr>
+									<tr style='box-sizing: border-box; margin: 0;'>
+										<td style='box-sizing: border-box; vertical-align: top; margin: 0; padding: 10px 10px;' valign='top'>ما نیاز به ارسال اطلاعات حساس سرویسمان به ایمیل شما داریم. لذا وارد کردن ایمیل صحیح اهمیت بالایی دارد.</td>
+									</tr>
+									<tr style='box-sizing: border-box; margin: 0;'>
+										<td itemprop='handler' itemscope itemtype='http://schema.org/HttpActionHandler' style='box-sizing: border-box; vertical-align: top; margin: 0; padding: 10px 10px;' valign='top'><a href='" +
+                                  callBackUrl +
+                                  @"' itemprop='url' style='box-sizing: border-box; color: #FFF; text-decoration: none; line-height: 2em; font-weight: bold; text-align: center; cursor: pointer; display: block; border-radius: 5px; text-transform: capitalize; background-color: #5867dd; margin: 0; border-color: #5867dd; border-style: solid; border-width: 10px 20px;'>تایید آدرس ایمیل</a></td>
+									</tr>
+									<tr style='box-sizing: border-box; margin: 0;'>
+										<td style='box-sizing: border-box; padding-top: 5px; vertical-align: top; margin: 0; text-align: right;' valign='top'><b>Leo-Coin</b></td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</td>
+		</tr>
+	</table>
+
+</body>
+
+</html>";
+                _emailSender.SendEmailAsync(email, "تاییدیه ایمیل", htmlMessage);
+                
                 return true;
             }
             catch (Exception ex)
             {
+                _logger.LogError("error occured while sending confirmation email to " + email + " : " + ex.Message);
                 throw new Exception(ex.Message);
             }
-            
         }
 
         public async Task<bool> SendConfirmationSmsAsync(string userId, string phoneNumber)
@@ -49,7 +112,7 @@ namespace Crypto.Infrastructure.Identity
             {
                 var user = await _userManager.FindByIdAsync(userId);
                 var token = await _userManager.GenerateChangePhoneNumberTokenAsync(user, phoneNumber);
-                
+
                 var api = new KavenegarApi("API CODE");
                 var result = api.Send("SENDER CODE", phoneNumber, "MESSAGE TEXT " + token);
 
@@ -68,7 +131,7 @@ namespace Crypto.Infrastructure.Identity
                 var user = await _userManager.FindByIdAsync(userId);
                 var result = await _userManager.VerifyChangePhoneNumberTokenAsync(user, token, phoneNumber);
                 if (!result) return false;
-                
+
                 await AddConfirmsClaim(user.Id, "PhoneNumber");
                 return true;
             }
@@ -103,7 +166,8 @@ namespace Crypto.Infrastructure.Identity
             return financial?.CardNumber;
         }
 
-        public async Task<(Result Result, string UserId)> CreateUserAsync(string userName, string firstName, string lastName, string password)
+        public async Task<(Result Result, string UserId)> CreateUserAsync(string userName, string firstName,
+            string lastName, string password)
         {
             var user = new ApplicationUser
             {
@@ -114,9 +178,9 @@ namespace Crypto.Infrastructure.Identity
             var result = await _userManager.CreateAsync(user, password);
             if (!result.Succeeded) return (result.ToApplicationResult(), user.Id);
 
-            
+
             await _userManager.AddClaimAsync(user, new Claim("identifier", user.Id));
-            
+
             var command = new CreateProfileCommand
             {
                 FirstName = firstName,
@@ -128,7 +192,8 @@ namespace Crypto.Infrastructure.Identity
             return (result.ToApplicationResult(), user.Id);
         }
 
-        public async Task<(Result Result, string UserId)> CreateExternalLoginUserAsync(string email, string firstName, string lastName)
+        public async Task<(Result Result, string UserId)> CreateExternalLoginUserAsync(string email, string firstName,
+            string lastName)
         {
             var user = await _userManager.FindByEmailAsync(email);
             if (user == null)
@@ -150,9 +215,8 @@ namespace Crypto.Infrastructure.Identity
                 await _mediator.Send(command);
 
                 return (result.ToApplicationResult(), user.Id);
-
             }
-            
+
             throw new NotFoundException();
         }
 

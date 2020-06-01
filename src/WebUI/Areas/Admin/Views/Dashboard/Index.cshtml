@@ -1,4 +1,5 @@
 ﻿@using Crypto.Domain.Enums
+@using MD.PersianDateTime.Standard
 @model WebUI.Areas.Admin.Controllers.DashboardViewModel
 
 @{
@@ -94,6 +95,76 @@
                             </div>
                         </div>
                     </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h6 class="card-title">اعلانات اخیر</h6>
+                <div class="table-responsive">
+                    <table class="table m-b-0">
+                        <thead>
+                        <tr>
+                            <th>کاربر</th>
+                            <th>توضیح</th>
+                            <th>تاریخ</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var notification in Model.Notifications)
+                        {
+                            var persianDateTime = new PersianDateTime(notification.Created);
+                            <tr>
+                                <td>@notification.UsersFullName</td>
+                                <td>@notification.Text</td>
+                                <td>@persianDateTime.ToShortDateString()</td>
+
+                                @switch (notification.Type)
+                                {
+                                    case NotificationType.Applicant:
+                                        <td>
+                                            <a class="btn btn-info" asp-area="Admin" asp-controller="Users" asp-action="Details" asp-route-id="@notification.CreatedBy">مدیریت</a>
+                                        </td>
+                                        break;
+                                    case NotificationType.Simple:
+                                        <td></td>
+                                        break;
+                                    case NotificationType.Tell:
+                                        <td>
+                                            <a class="btn btn-info" asp-area="Admin" asp-controller="Users" asp-action="Details" asp-route-id="@notification.CreatedBy">مدیریت</a>
+                                        </td>
+                                        break;
+                                    case NotificationType.NationalCard:
+                                        <td>
+                                            <a class="btn btn-info" asp-area="Admin" asp-controller="Users" asp-action="Details" asp-route-id="@notification.CreatedBy">مدیریت</a>
+                                        </td>
+                                        break;
+                                    case NotificationType.BankCard:
+                                        <td>
+                                            <a class="btn btn-info" asp-area="Admin" asp-controller="Users" asp-action="Details" asp-route-id="@notification.CreatedBy">مدیریت</a>
+                                        </td>
+                                        break;
+                                    case NotificationType.Ticket:
+                                        break;
+                                    case NotificationType.Purchase:
+                                        break;
+                                    case NotificationType.Sell:
+                                        break;
+                                    default:
+                                        <td></td>
+                                        break;
+                                }
+
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

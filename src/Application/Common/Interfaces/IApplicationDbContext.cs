@@ -32,6 +32,8 @@ namespace Crypto.Application.Common.Interfaces
         DbSet<Ticket> Tickets { get; set; }
         
         DbSet<TicketMessage> TicketMessages { get; set; }
+        
+        DbSet<Notification> Notifications { get; set; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
