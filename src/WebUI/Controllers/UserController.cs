@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Security.Claims;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Crypto.Application.Common.Interfaces;
@@ -7,6 +8,7 @@ using Crypto.Infrastructure.Identity;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using WebUI.Models;
 
@@ -230,6 +232,74 @@ namespace WebUI.Controllers
         public IActionResult NotAllowed(string email)
         {
             ViewData["Email"] = email;
+            return View();
+        }
+
+        [Route("forgot_password")]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [Route("forgot_password")]
+        [HttpPost]
+        public async Task<IActionResult> ForgotPassword(string email)
+        {
+            if (string.IsNullOrEmpty(email)) return View();
+
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
+                return RedirectToAction("ForgotPasswordConfirmation");
+
+            var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var callBackUrl = Url.Action("ResetPassword", "User", new {code},
+                Request.Scheme);
+
+            var thread = new Thread(() => _identityService.SendResetPasswordEmailAsync(email, callBackUrl));
+            thread.Start();
+
+            return RedirectToAction("ForgotPasswordConfirmation");
+        }
+
+        [Route("send_password")]
+        public IActionResult ForgotPasswordConfirmation()
+        {
+            return View();
+        }
+
+        [Route("reset_password")]
+        public IActionResult ResetPassword(string code)
+        {
+            ViewData["Code"] = code;
+            return View();
+        }
+
+        [Route("reset_password")]
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model, string code)
+        {
+            if (!ModelState.IsValid) return View(model);
+
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+                return RedirectToAction("ResetPasswordConfirmation");
+
+            var result = await _userManager.ResetPasswordAsync(user, code, model.Password);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("ResetPasswordConfirmation");
+            }
+            
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+            return View(model);
+        }
+
+        [Route("reset_confirmation")]
+        public IActionResult ResetPasswordConfirmation()
+        {
             return View();
         }
 

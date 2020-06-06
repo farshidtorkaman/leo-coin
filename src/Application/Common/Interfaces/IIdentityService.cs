@@ -24,6 +24,8 @@ namespace Crypto.Application.Common.Interfaces
 
         bool SendConfirmationEmailAsync(string email, string callBackUrl);
 
+        bool SendResetPasswordEmailAsync(string email, string callBackUrl);
+
         Task<bool> SendConfirmationSmsAsync(string userId, string phoneNumber);
 
         Task<bool> ConfirmPhoneAsync(string userId, string phoneNumber, string token);

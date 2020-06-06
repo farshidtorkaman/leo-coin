@@ -22,7 +22,7 @@
             <input asp-for="RememberMe" class="custom-control-input" checked>
             <label class="custom-control-label" for="RememberMe">مرا به خاطر بسپار</label>
         </div>
-        <a class="d-block mt-2 mt-sm-0" href="recover-password.html">بازنشانی رمز عبور</a>
+        <a class="d-block mt-2 mt-sm-0" asp-action="ForgotPassword">بازنشانی رمز عبور</a>
     </div>
     <button class="btn btn-primary btn-block">ورود</button>
 </form>
