@@ -11,7 +11,6 @@ using Crypto.Application.Users.Profile.Commands;
 using Kavenegar;
 using MediatR;
 using System.Security.Claims;
-using System.Threading;
 using Microsoft.Extensions.Logging;
 
 namespace Crypto.Infrastructure.Identity

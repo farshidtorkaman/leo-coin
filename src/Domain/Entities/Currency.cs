@@ -12,6 +12,7 @@ namespace Crypto.Domain.Entities
         public bool CanBeSell { get; set; }
         public string WalletId { get; set; }
         public double Stock { get; set; }
+        public string Symbol { get; set; }
         public virtual List<Purchase> Purchases { get; set; }
         public virtual List<Sell> Sells { get; set; }
     }

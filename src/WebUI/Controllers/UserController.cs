@@ -50,8 +50,11 @@ namespace WebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
         {
+            model.ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             returnUrl ??= Url.Content("~/");
-            if (!ModelState.IsValid) return View(model);
+
+            if (!ModelState.IsValid)
+                return View(model);
 
             var result =
                 await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
@@ -72,9 +75,10 @@ namespace WebUI.Controllers
                     var callBackUrl = Url.Action("ConfirmEmail", "User", new {userId = user.Id, code},
                         Request.Scheme);
 
-                    var thread = new Thread(() => _identityService.SendConfirmationEmailAsync(model.Email, callBackUrl));
+                    var thread = new Thread(() =>
+                        _identityService.SendConfirmationEmailAsync(model.Email, callBackUrl));
                     thread.Start();
-                    
+
                     return RedirectToAction("NotAllowed", new {email = user.Email});
                 }
             }

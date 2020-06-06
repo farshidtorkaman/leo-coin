@@ -73,6 +73,7 @@ namespace Crypto.Infrastructure
             services.AddTransient<ICsvFileBuilder, CsvFileBuilder>();
             services.AddTransient<IPaymentService, PaymentService>();
             services.AddTransient<INotificationService, NotificationService>();
+            services.AddTransient<ICryptoService, CryptoService>();
 
             return services;
         }

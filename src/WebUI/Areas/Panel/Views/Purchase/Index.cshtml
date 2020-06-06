@@ -18,7 +18,7 @@
                     </div>
                     <div class="form-group">
                         <label for="tomanPrice">معادل تومانی</label>
-                        <input type="text" disabled class="form-control text-left" id="tomanPrice" dir="ltr">
+                        <input type="text" disabled class="form-control text-center" style="font-size: 20px" id="tomanPrice" value="" dir="ltr">
                     </div>
                     <div class="form-group">
                         <label for="walletId">آدرس کیف پول</label>
@@ -41,3 +41,28 @@
     </div>
 </div>
 
+@section Scripts 
+{
+    <script>
+        function sleep(ms) {
+          return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        let path = window.location.pathname;
+        let displayUrl = path.split('/')[3];
+        $("#amount").keyup(async function(){
+            let amount = this.value;
+            amount = parseFloat(amount);
+            if(amount !== 0){
+                $.ajax({
+                    url: '/panel/price/' + displayUrl,
+                    data: { amount: amount },
+                    type: 'post',
+                    success: function(data){
+                        $("#tomanPrice").val(data);
+                    }
+                })
+            }
+        })
+    </script>
+}

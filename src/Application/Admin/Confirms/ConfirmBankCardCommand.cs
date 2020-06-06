@@ -33,7 +33,7 @@ namespace Crypto.Application.Admin.Confirms
                 throw new NotFoundException();
 
             var document =
-                await _context.Documents.FirstOrDefaultAsync(f => f.UserId == request.UserId, cancellationToken);
+                await _context.Documents.FirstOrDefaultAsync(f => f.CreatedBy == request.UserId, cancellationToken);
             if (document == null)
                 throw new NotFoundException(nameof(Document), request.UserId);
 
