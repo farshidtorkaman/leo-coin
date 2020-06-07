@@ -253,7 +253,7 @@
         </ul>
         <ul>
             <li data-toggle="tooltip" title="خروج">
-                <a href="login.html" class="go-to-page">
+                <a href="#" class="go-to-page logout">
                     <i class="icon ti-power-off"></i>
                 </a>
             </li>
@@ -597,9 +597,12 @@
 <!-- begin::main content -->
 <main class="main-content">
 
-    @RenderBody()
+	@RenderBody()
 
 </main>
+
+<form asp-action="Logout" asp-controller="User" asp-area="Panel" id="logoutForm">
+</form>
 <!-- end::main content -->
 
 <!-- Plugin scripts -->
@@ -647,39 +650,11 @@
 <!-- App scripts -->
 <script src="~/assets/js/app.js"></script>
 <script src="~/assets/js/custom.js"></script>
-
-@* <script> *@
-@* 	$(document).ready(function(){ *@
-@* 		let urlPath = window.location.pathname; *@
-@*       	$.ajax({ *@
-@*          	url: '/panel/dashboard/load_currencies', *@
-@*             type: 'post', *@
-@*             success: function(data){ *@
-@*               	$.each(data, function(){ *@
-@*                 	let displayUrl = ""; *@
-@*                     let title = ""; *@
-@*                     $.each(this, function(key, value) { *@
-@*                       	if (key === "displayUrl") { *@
-@*                        		displayUrl = value; *@
-@*                         } *@
-@*                         if (key === "title") { *@
-@*                         	title = value; *@
-@*                         } *@
-@*                     }); *@
-@*                     const activeClass = urlPath === "/panel/buy/" + displayUrl ? "active" : ""; *@
-@*                     if(activeClass === "active"){ *@
-@*                     	$("a[href='#navigationApps']").parent().addClass('active'); *@
-@*                     	$("#navigationApps").addClass("navigation-active"); *@
-@*                     } *@
-@*                     $("#navigationApps").append("<li><a class='" + activeClass + "' href='/panel/buy/" + displayUrl + "'>" + title + "</a></li>"); *@
-@*                 }); *@
-@*             }, *@
-@*             error: function(){ *@
-@*              	toastr.error('خطایی رخ داد !'); *@
-@*             } *@
-@*         });  *@
-@* 	}); *@
-@* </script> *@
+<script>
+	$(".logout").click(function(){
+		$("#logoutForm").submit();
+	})
+</script>
 
 @(await RenderSectionAsync("Scripts", false))
 </body>

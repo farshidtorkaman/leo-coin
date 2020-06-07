@@ -50,7 +50,7 @@ namespace Crypto.Infrastructure
 
                 // User Setting
                 options.User.RequireUniqueEmail = true;
-            }).AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+            }).AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders().AddErrorDescriber<PersianIdentityErrorDescriber>();
 
             services.ConfigureApplicationCookie(options =>
             {

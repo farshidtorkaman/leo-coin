@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using System.Security.Claims;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Crypto.Application.Common.Interfaces;
@@ -8,7 +7,6 @@ using Crypto.Infrastructure.Identity;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using WebUI.Models;
 
@@ -196,7 +194,8 @@ namespace WebUI.Controllers
 
             foreach (var error in result.Errors)
             {
-                ModelState.AddModelError(string.Empty, error);
+                if(!error.Contains("نام کاربری"))
+                    ModelState.AddModelError(string.Empty, error);
             }
 
             return View(model);
@@ -304,7 +303,7 @@ namespace WebUI.Controllers
         }
 
         [Route("logout")]
-        //[HttpPost]
+        [HttpPost]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
