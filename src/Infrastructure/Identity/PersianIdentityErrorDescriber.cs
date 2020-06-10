@@ -2,7 +2,7 @@
 
 namespace Crypto.Infrastructure.Identity
 {
-    public abstract class PersianIdentityErrorDescriber : IdentityErrorDescriber
+    public class PersianIdentityErrorDescriber : IdentityErrorDescriber
     {
         public override IdentityError DuplicateEmail(string email)
             => new IdentityError()

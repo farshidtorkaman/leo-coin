@@ -9626,6 +9626,7 @@ body.form-membership .form-wrapper hr {
 	-moz-transition: background .3s;
 	transition: background .3s;
 	line-height: 1.75;
+	padding-right: 25px;
 }
 
 .navigation>.navigation-menu-body>ul li a:hover {
@@ -9677,7 +9678,7 @@ body.form-membership .form-wrapper hr {
 }
 
 .navigation>.navigation-menu-body>ul li a+ul li a {
-	padding: 5px 35px 7px 15px;
+	padding: 5px 60px 7px 15px;
 }
 
 .navigation>.navigation-menu-body>ul li a+ul ul {

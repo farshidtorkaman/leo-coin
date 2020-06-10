@@ -9,9 +9,70 @@
     var birthDate = new PersianDateTime(Model?.BirthDate);
 }
 <link href="~/vendors/mddatepicker/jquery.md.bootstrap.datetimepicker.style.css" rel="stylesheet"/>
+<style>
+    .tips ul{
+        padding-right: 25px !important;
+    }
+    .tips li {
+        list-style-type: disc !important;
+    }
+    
+    .applicantText {
+        border: 1px solid;
+        font-size: 0.88em;
+        padding: 20px;
+        text-align: justify;
+    }
+    .sample-image {
+        text-align: center;
+    }
+    .sample-image img {
+        width: 60%;
+    }
+    
+    .sample-link {
+        color: #5867dd;
+        cursor: pointer;
+    }
+</style>
+
+<div class="modal fade" id="description" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">توضیحات درخواست نامه</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="بستن">
+                    <i class="ti-close"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="text text-danger">متن زیر را بر روی کاغذ نوشته و به مانند تصویر زیر به همراه کارت ملی عکس گرفته و برای ما در قسمت درخواست نامه ارسال نمایید.</p>
+                <div class="sample-image">
+                    <img src="/assets/media/image/sample.jpg" alt="sample applicant"/>
+                </div>
+                <div class="applicantText">
+                    <p>اینجانب ............................... فرزند ............... به شماره ملی .............................. ضمن مطالعه و پذیرش قوانین حاکم بر سامانه پی 98 قصد فعالسازی حساب کاربری خود را در وب سایت پی 98 دارم.</p>
+                    <p>اینجانب متعهد می شوم از حساب کاربری خود تنها برای استفاده شخصی و در چارچوب قوانین و مقررات جمهوری اسلامی ایران استفاده نموده و آن را در اختیار افراد دیگری قرار نداده و یا برای انجام سفارشات دیگران از آن استفاده نکنم.</p>
+                    <p>مسئولیت هرگونه سوء استفاده احتمالی همچون خرید با کارت های سرقتی، کلاهبرداری، پولشویی، لو رفتن اطلاعات و سایر تخلفات بر عهده اینجانب بوده و حق هرگونه اعتراضی را نسبت به مجموعه پی 98 از خود سلب می نمایم.</p>
+                    <p>نام و امضا</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">متوجه شدم</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="card">
     <div class="card-body">
+        <div class="alert alert-secondary tips">
+            <ul>
+                <li>سایز هر عکس حداقل 5 مگابایت باید باشد</li>
+                <li>عکس درخواست نامه باید مطابق نمونه باشد <button type="button" class="btn btn-info" data-toggle="modal" data-target="#description">نمونه درخواست نامه</button></li>
+                <li>عکس ها واضح و با کیفیت باشند</li>
+            </ul>
+        </div>
         <h6 class="card-title">ارسال مدارک</h6>
         <form asp-action="Documents" enctype="multipart/form-data">
             <input type="hidden" asp-for="Id"/>
@@ -137,17 +198,21 @@
                             تایید شده
                         </small>
                     }
-                    @if (Model?.ApplicantImageStatus == DocumentImagesStatus.Rejected)
+                    else if (Model?.ApplicantImageStatus == DocumentImagesStatus.Rejected)
                     {
                         <small class="form-text text-danger">
                             رد شده
                         </small>
                     }
-                    @if (Model?.ApplicantImageStatus == DocumentImagesStatus.Sent)
+                    else if (Model?.ApplicantImageStatus == DocumentImagesStatus.Sent)
                     {
                         <small class="form-text text-muted">
                             ارسال شده
                         </small>
+                    }
+                    else
+                    {
+                        <small class="sample-link">نمونه</small>
                     }
                     <span class="text text-danger" asp-validation-for="ApplicantImage"></span>
                 </div>
@@ -181,6 +246,10 @@
                 let fileName = $(this).val().split("\\").pop();
                 $(this).next(".custom-file-label").html(fileName);
             });
+            
+            $(".sample-link").click(function(){
+                $("#description").modal('show');
+            })
         });
             
         </script>

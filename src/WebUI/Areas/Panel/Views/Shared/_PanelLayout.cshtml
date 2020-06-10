@@ -231,45 +231,57 @@
 <!-- end::sidebar settings -->
 
 <!-- begin::navigation -->
-<div class="navigation">
-    <div class="navigation-icon-menu">
-        <ul>
-            <li class="@(path.StartsWith("/panel/dashboard") || path.StartsWith("/panel/user/") || path.StartsWith("/panel/factors/") || path.StartsWith("/panel/tickets/") ? "active" : "")" data-toggle="tooltip" title="پنل">
-                <a href="#navigationDashboards" title="پنل">
-                    <i class="icon ti-pie-chart"></i>
-                    <span class="badge badge-warning">2</span>
-                </a>
-            </li>
-            <li class="@(path.StartsWith("/panel/buy/") ? "active" : "")" data-toggle="tooltip" title="خرید ارز دیجیتال">
-                <a href="#navigationApps" title="خرید ارز دیجیتال">
-                    <i class="icon ti-package"></i>
-                </a>
-            </li>
-            <li data-toggle="tooltip" title="فروش ارز دیجیتال">
-                <a href="#navigationPlugins">
-                    <i class="icon ti-brush-alt"></i>
-                </a>
-            </li>
-        </ul>
-        <ul>
-            <li data-toggle="tooltip" title="خروج">
-                <a href="#" class="go-to-page logout">
-                    <i class="icon ti-power-off"></i>
-                </a>
-            </li>
-        </ul>
-    </div>
+<div class="navigation" style="font-size: 1.1em">
+    @* <div class="navigation-icon-menu"> *@
+    @*     <ul> *@
+    @*         <li class="@(path.StartsWith("/panel/dashboard") || path.StartsWith("/panel/user/") || path.StartsWith("/panel/factors/") || path.StartsWith("/panel/tickets/") ? "active" : "")" data-toggle="tooltip" title="پنل"> *@
+    @*             <a href="#navigationDashboards" title="پنل"> *@
+    @*                 <i class="icon ti-pie-chart"></i> *@
+    @*                 <span class="badge badge-warning">2</span> *@
+    @*             </a> *@
+    @*         </li> *@
+    @*         <li class="@(path.StartsWith("/panel/buy/") ? "active" : "")" data-toggle="tooltip" title="خرید ارز دیجیتال"> *@
+    @*             <a href="#navigationApps" title="خرید ارز دیجیتال"> *@
+    @*                 <i class="icon ti-package"></i> *@
+    @*             </a> *@
+    @*         </li> *@
+    @*         <li data-toggle="tooltip" title="فروش ارز دیجیتال"> *@
+    @*             <a href="#navigationPlugins"> *@
+    @*                 <i class="icon ti-brush-alt"></i> *@
+    @*             </a> *@
+    @*         </li> *@
+    @*     </ul> *@
+    @*     <ul> *@
+    @*         <li data-toggle="tooltip" title="خروج"> *@
+    @*             <a href="#" class="go-to-page logout"> *@
+    @*                 <i class="icon ti-power-off"></i> *@
+    @*             </a> *@
+    @*         </li> *@
+    @*     </ul> *@
+    @* </div> *@
     <div class="navigation-menu-body">
-        <ul id="navigationDashboards" class="@(path.StartsWith("/panel/dashboard") || path.StartsWith("/panel/user/") || path.StartsWith("/panel/factors/") || path.StartsWith("/panel/tickets/") ? "navigation-active" : "")">
-            <li class="navigation-divider">پنل</li>
+        <ul id="navigationDashboards" class="navigation-active">
             <li>
                 <a class="@(path == "/panel/dashboard" ? "active" : "")" asp-area="Panel" asp-controller="Dashboard" asp-action="Index">داشبورد</a>
             </li>
-            <li>
-                <a class="@(path == "/panel/tickets/create" ? "active" : "")" asp-area="Panel" asp-controller="Tickets" asp-action="Create">ارسال تیکت</a>
+            <li class="@(path.StartsWith("/panel/buy/") ? "open" : "")">
+                <a href="#">خرید ارز دیجیتال</a>
+                <ul>
+                    <li>
+						<a class="@(path == "/panel/buy/bitcoin" ? "active" : "")" asp-area="Panel" asp-controller="Purchase" asp-action="Index" asp-route-displayUrl="bitcoin">خرید بیت کوین</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="@(path.StartsWith("/panel/sell/") ? "open" : "")">
+                <a href="#">فروش ارز دیجیتال</a>
+                <ul>
+					<li>
+		                 <a class="@(path == "/panel/sell/bitcoin" ? "active" : "")" asp-area="Panel" asp-controller="Sells" asp-action="Index" asp-route-displayUrl="bitcoin">فروش بیت کوین</a>
+		             </li>
+                </ul>
             </li>
             <li>
-                <a class="@(path == "/panel/tickets/list" || path.StartsWith("/panel/tickets/details") ? "active" : "")" asp-area="Panel" asp-controller="Tickets" asp-action="Index">لیست تیکت ها </a>
+                <a class="@(path == "/panel/tickets/list" || path.StartsWith("/panel/tickets/details") ? "active" : "")" asp-area="Panel" asp-controller="Tickets" asp-action="Index">تیکت ها </a>
             </li>
             <li class="@(path.StartsWith("/panel/factors/") ? "open" : "")">
                 <a href="#">فاکتورها</a>
@@ -284,18 +296,6 @@
             </li>
             <li>
                 <a class="@(path.StartsWith("/panel/user") ? "active" : "")" asp-area="Panel" asp-controller="User" asp-action="Index">تنظیمات پروفایل </a>
-            </li>
-        </ul>
-        <ul id="navigationApps" class="@(path.StartsWith("/panel/buy/") ? "navigation-active" : "")">
-            <li class="navigation-divider">خرید ارز دیجیتال</li>
-            <li>
-                <a class="@(path == "/panel/buy/bitcoin" ? "active" : "")" asp-area="Panel" asp-controller="Purchase" asp-action="Index" asp-route-displayUrl="bitcoin">خرید بیت کوین</a>
-            </li>
-        </ul>
-        <ul id="navigationPlugins" class="@(path.StartsWith("/panel/sell/") ? "navigation-active" : "")">
-            <li class="navigation-divider">فروش ارز دیجیتال</li>
-            <li>
-                <a class="@(path == "/panel/sell/bitcoin" ? "active" : "")" asp-area="Panel" asp-controller="Sells" asp-action="Index" asp-route-displayUrl="bitcoin">فروش بیت کوین</a>
             </li>
         </ul>
     </div>
@@ -597,7 +597,7 @@
 <!-- begin::main content -->
 <main class="main-content">
 
-	@RenderBody()
+    @RenderBody()
 
 </main>
 
