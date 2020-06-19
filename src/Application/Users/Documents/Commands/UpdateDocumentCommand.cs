@@ -15,7 +15,6 @@ namespace Crypto.Application.Users.Documents.Commands
         public string NationalCode { get; set; }
         public DateTime? BirthDate { get; set; }
         public IFormFile NationalCardImage { get; set; }
-        public IFormFile BankCardImage { get; set; }
         public IFormFile ApplicantImage { get; set; }
     }
 
@@ -55,16 +54,6 @@ namespace Crypto.Application.Users.Documents.Commands
                     _notificationService.SendAsync(NotificationType.NationalCard);
                 }
 
-                if (request.BankCardImage != null)
-                {
-                    document.BankCardImage =
-                        await _imageAccessor.Upload(request.BankCardImage, _currentUserService.UserId,
-                            "نصویر کارت بانکی");
-                    document.BankCardImageStatus = DocumentImagesStatus.Sent;
-
-                    _notificationService.SendAsync(NotificationType.BankCard);
-                }
-
                 if (request.ApplicantImage != null)
                 {
                     document.ApplicantImage =
@@ -95,21 +84,6 @@ namespace Crypto.Application.Users.Documents.Commands
                         _notificationService.SendAsync(NotificationType.NationalCard);
                     }
                 }
-
-                if (document.BankCardImageStatus == DocumentImagesStatus.Rejected ||
-                    document.BankCardImageStatus == null)
-                {
-                    if (request.BankCardImage != null)
-                    {
-                        document.BankCardImage =
-                            await _imageAccessor.Upload(request.BankCardImage, _currentUserService.UserId,
-                                "تصویر کارت بانکی");
-                        document.BankCardImageStatus = DocumentImagesStatus.Sent;
-
-                        _notificationService.SendAsync(NotificationType.BankCard);
-                    }
-                }
-
 
                 if (document.ApplicantImageStatus == DocumentImagesStatus.Rejected ||
                     document.ApplicantImageStatus == null)

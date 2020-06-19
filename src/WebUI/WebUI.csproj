@@ -311,6 +311,22 @@
     <_ContentIncludedByDefault Remove="Areas\Admin\Views\Role\Create.cshtml" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\mainSite\fonts\fontawesome-webfont.svg" />
+    <None Include="wwwroot\mainSite\fonts\fontawesome-webfont.woff2" />
+    <None Include="wwwroot\mainSite\fonts\IRANSansWeb.woff2" />
+    <None Include="wwwroot\mainSite\fonts\IRANSansWeb_Bold.woff2" />
+    <None Include="wwwroot\mainSite\fonts\IRANSansWeb_Light.woff2" />
+    <None Include="wwwroot\mainSite\js\bootstrap.min.js" />
+    <None Include="wwwroot\mainSite\js\custom.js" />
+    <None Include="wwwroot\mainSite\js\jquery-2.2.4.min.js" />
+    <None Include="wwwroot\mainSite\js\jquery.countdown.min.js" />
+    <None Include="wwwroot\mainSite\js\jquery.magnific-popup.min.js" />
+    <None Include="wwwroot\mainSite\js\jquery.plugin.min.js" />
+    <None Include="wwwroot\mainSite\js\modernizr.js" />
+    <None Include="wwwroot\mainSite\js\select2.min.js" />
+  </ItemGroup>
+
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>

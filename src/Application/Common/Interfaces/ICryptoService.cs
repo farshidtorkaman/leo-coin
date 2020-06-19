@@ -4,6 +4,7 @@ namespace Crypto.Application.Common.Interfaces
 {
     public interface ICryptoService
     {
-        Task<double> ConvertToToman(double amount, string symbol);
+        double ConvertToToman(double amount, string symbol);
+        double GetWage(double amount, string symbol);
     }
 }

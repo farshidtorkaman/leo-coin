@@ -8,13 +8,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Crypto.Application.PriceCalculations
 {
-    public class GetPriceCommand : IRequest<string>
+    public class GetPriceCommand : IRequest<double>
     {
         public double Amount { get; set; }
         public string DisplayUrl { get; set; }
     }
     
-    public class GetPriceCommandHandler : IRequestHandler<GetPriceCommand, string>
+    public class GetPriceCommandHandler : IRequestHandler<GetPriceCommand, double>
     {
         private readonly IApplicationDbContext _context;
         private readonly ICryptoService _cryptoService;
@@ -25,7 +25,7 @@ namespace Crypto.Application.PriceCalculations
             _cryptoService = cryptoService;
         }
 
-        public async Task<string> Handle(GetPriceCommand request, CancellationToken cancellationToken)
+        public async Task<double> Handle(GetPriceCommand request, CancellationToken cancellationToken)
         {
             var currency =
                 await _context.Currencies.SingleOrDefaultAsync(f => f.DisplayUrl == request.DisplayUrl,
@@ -33,7 +33,7 @@ namespace Crypto.Application.PriceCalculations
             if(currency == null)
                 throw new NotFoundException(nameof(Currency), request.DisplayUrl);
 
-            return $"{await _cryptoService.ConvertToToman(request.Amount, currency.Symbol):n0}";
+            return _cryptoService.ConvertToToman(request.Amount, currency.Symbol) / 10;
         }
     }
 }

@@ -1,9 +1,15 @@
-﻿using Crypto.Domain.Enums;
+﻿using System.Collections.Generic;
+using Crypto.Domain.Enums;
 
 namespace Crypto.Application.Admin.Users.Queries
 {
     public class UserDetailVm
     {
+        public UserDetailVm()
+        {
+            Financials = new List<Financial>();
+        }
+
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string PhoneNumber { get; set; }
@@ -22,10 +28,17 @@ namespace Crypto.Application.Admin.Users.Queries
         public Status BankCardStatus { get; set; }
         public string ApplicantImage { get; set; }
         public Status ApplicantStatus { get; set; }
+        public List<Financial> Financials { get; set; }
+    }
+
+    public class Financial
+    {
+        public int Id { get; set; }
         public string BankCardNumber { get; set; }
         public string BankName { get; set; }
-        public string AccountOwnerName { get; set; }
         public string AccountNumber { get; set; }
         public string Sheba { get; set; }
+        public string BankCardImage { get; set; }
+        public Status Status { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Crypto.Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -83,26 +84,27 @@ namespace WebUI.Areas.Panel.Controllers
         public async Task<IActionResult> Financial()
         {
             ViewBag.BankId = new SelectList(await Mediator.Send(new GetBanksQuery()), "Id", "Title");
-            return View(await Mediator.Send(new GetFinancialInformationQuery {UserId = CurrentUserService.UserId}));
+            return View(await Mediator.Send(new GetFinancialInformationQuery()));
         }
 
         [Route("financial")]
         [HttpPost]
-        public async Task<IActionResult> Financial(UpdateFinancialInfoCommand command)
+        public async Task<IActionResult> Financial(CreateFinancialInfoCommand command)
         {
+            var messages = new List<string>();
             try
             {
                 await Mediator.Send(command);
-                return RedirectToAction("Financial");
+                return Json(new {success = true});
             }
             catch (ValidationException exception)
             {
-                foreach (var (key, value) in exception.Errors)
+                foreach (var (_, values) in exception.Errors)
                 {
-                    ModelState.AddModelError(key, value[0]);
+                    messages.AddRange(values);
                 }
 
-                return View(_mapper.Map<UpdateFinancialInfoCommand, FinancialInfoVm>(command));
+                return Json(new {success = false, messages});
             }
         }
 
@@ -200,6 +202,18 @@ namespace WebUI.Areas.Panel.Controllers
                 throw new Exception();
 
             return Json(await Mediator.Send(new GetCitiesByProvinceQuery {ProvinceId = provinceId}));
+        }
+
+        [Route("get_full_name")]
+        public IActionResult GetFullName()
+        {
+            return Json(_identityService.GetFullName(CurrentUserService.UserId));
+        }
+
+        [Route("get_email")]
+        public async Task<IActionResult> GetEmail()
+        {
+            return Json(await _identityService.GetUserNameAsync(CurrentUserService.UserId));
         }
     }
 }

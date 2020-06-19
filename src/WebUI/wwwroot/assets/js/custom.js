@@ -72,4 +72,4 @@ $(".rejectSell").click(function(){
         $(".modal-content").append(data);
         $(".confirmRejectModal").modal('show');
     })
-})
+});

@@ -14,5 +14,11 @@ namespace WebUI.Areas.Panel.Controllers
         {
             return Json(await Mediator.Send(new GetPriceCommand {Amount = amount, DisplayUrl = displayUrl}));
         }
+
+        [Route("wage/{displayUrl}")]
+        public async Task<JsonResult> GetWage(double amount, string displayUrl)
+        {
+            return Json(await Mediator.Send(new GetWageCommand { Amount = amount, DisplayUrl = displayUrl }));
+        }
     }
 }

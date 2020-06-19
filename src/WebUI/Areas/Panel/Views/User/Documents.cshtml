@@ -142,42 +142,6 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label for="bankCardPicture" class="col-sm-3 col-form-label">تصویر کارت بانکی</label>
-                <div class="col-sm-9">
-                    <div class="custom-file">
-                        @if (Model?.BankCardImageStatus == DocumentImagesStatus.Confirmed || Model?.BankCardImageStatus == DocumentImagesStatus.Sent)
-                        {
-                            <input type="file" class="custom-file-input" name="BankCardImage" id="bankCardPicture" disabled>
-                        }
-                        else
-                        {
-                            <input type="file" class="custom-file-input" name="BankCardImage" id="bankCardPicture">
-                        }
-
-                        <label class="custom-file-label" for="bankCardPicture"></label>
-                    </div>
-                    @if (Model?.BankCardImageStatus == DocumentImagesStatus.Confirmed)
-                    {
-                        <small class="form-text text-success">
-                            تایید شده
-                        </small>
-                    }
-                    @if (Model?.BankCardImageStatus == DocumentImagesStatus.Rejected)
-                    {
-                        <small class="form-text text-danger">
-                            رد شده
-                        </small>
-                    }
-                    @if (Model?.BankCardImageStatus == DocumentImagesStatus.Sent)
-                    {
-                        <small class="form-text text-muted">
-                            ارسال شده
-                        </small>
-                    }
-                    <span class="text text-danger" asp-validation-for="BankCardImage"></span>
-                </div>
-            </div>
-            <div class="form-group row">
                 <label for="applicationPicture" class="col-sm-3 col-form-label">تصویر درخواست نامه</label>
                 <div class="col-sm-9">
                     <div class="custom-file">
@@ -190,7 +154,7 @@
                             <input type="file" class="custom-file-input" name="ApplicantImage" id="applicationPicture">
                         }
 
-                        <label class="custom-file-label" for="bankCardPicture"></label>
+                        <label class="custom-file-label" for="applicationPicture"></label>
                     </div>
                     @if (Model?.ApplicantImageStatus == DocumentImagesStatus.Confirmed)
                     {

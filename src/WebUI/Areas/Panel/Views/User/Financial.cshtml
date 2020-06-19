@@ -1,64 +1,198 @@
-﻿@model Crypto.Application.Users.FinancialInformation.Queries.FinancialInfoVm
+﻿@using Crypto.Domain.Enums
+@model IEnumerable<Crypto.Application.Users.FinancialInformation.Queries.FinancialInfoVm>
 @{
     ViewData["Title"] = "Financial";
     Layout = "~/Areas/Panel/Views/Shared/_ProfileLayout.cshtml";
+    var i = 1;
 }
+<style>
+    .errors{
+            padding-right: 25px !important;
+        }
+        .errors li {
+            list-style-type: disc !important;
+        }
+</style>
+<!-- DataTable -->
+<link rel="stylesheet" href="~/vendors/dataTable/responsive.bootstrap.min.css" type="text/css">
 
 <div class="card">
     <div class="card-body">
         <h6 class="card-title">اطلاعات مالی</h6>
-        <form asp-action="Financial">
-            <input type="hidden" asp-for="Id" />
-            
-            <div class="form-group row">
-                <label for="CardNumber" class="col-sm-2 col-form-label">شماره کارت</label>
-                <div class="col-sm-10">
-                    <input asp-for="CardNumber" class="form-control text-right">
-                    <span asp-validation-for="CardNumber" class="text text-danger"></span>
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="BankName" class="col-sm-2 col-form-label">نام بانک</label>
-                <div class="col-sm-10">
-                    <select class="form-control" asp-for="BankId" asp-items="@ViewBag.BankId">
-                        <option value="0">انتخاب کنید</option>
-                    </select>
-                    <span asp-validation-for="BankId" class="text text-danger"></span>
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="AccountOwnerName" class="col-sm-2 col-form-label">نام دارنده حساب</label>
-                <div class="col-sm-10">
-                    <input asp-for="AccountOwnerName" class="form-control">
-                    <span asp-validation-for="AccountOwnerName" class="text text-danger"></span>
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="AccountNumber" class="col-sm-2 col-form-label">شماره حساب</label>
-                <div class="col-sm-10">
-                    <input asp-for="AccountNumber" class="form-control text-right">
-                    <span asp-validation-for="AccountNumber" class="text text-danger"></span>
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="Sheba" class="col-sm-2 col-form-label">شماره شبا</label>
-                <div class="col-sm-10">
-                    <div class="input-group">
-                        <input asp-for="Sheba" class="form-control text-right" dir="ltr">
-                        <div class="input-group-append">
-                            <span class="input-group-text" id="inputGroupPrepend3">IR</span>
-                        </div>
-                    </div>
-                    <span asp-validation-for="Sheba" class="text text-danger"></span>
-                </div>
-            </div>
-            <div class="form-group row">
-                <div class="col-md-2"></div>
-                <div class="col-md-9">
-                    <button type="submit" class="btn btn-primary">ذخیره تغییرات</button>
-                </div>
+        <div class="row mr-1 mb-3">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createForm"><i class="fa fa-plus mt-1 mr-2"></i>ایجاد کارت بانکی </button>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">بانک</th>
+                    <th scope="col">شماره کارت</th>
+                    <th scope="col">حساب</th>
+                    <th scope="col">شبا</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="6" style="text-align: center">هنوز کارتی ثبت نکرده اید</td>
+                    </tr>
+                }
+                else
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <th scope="row">@i</th>
+                            <td>@item.BankName</td>
+                            <td>@item.CardNumber</td>
+                            <td>@item.AccountNumber</td>
+                            <td>IR-@item.Sheba</td>
+                            @switch (item.Status)
+                            {
+                                case Status.Confirmed:
+                                    <td class="text-success">تایید شده</td>
+                                    break;
+                                case Status.Sent:
+                                    <td class="text text-warning">در حال بررسی</td>
+                                    break;
+                                case Status.Rejected:
+                                    <td class="text text-danger">رد شده</td>
+                                    break;
+                                default:
+                                    <td>نامشخص</td>
+                                    break;
+                            }
+                        </tr>
+                        i++;
+                    }
+                }
 
-            </div>
-        </form>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
+
+<div class="modal fade" id="createForm" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">ایجاد کارت بانکی</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="بستن">
+                    <i class="ti-close"></i>
+                </button>
+            </div>
+            <form asp-action="Financial" enctype="multipart/form-data" data-ajax="true" data-ajax-method="POST"
+                  data-ajax-success="success"
+                  data-ajax-begin="begin"
+                  data-ajax-complete="complete">
+                <div class="modal-body">
+                    <ul class="text-danger errors" id="errors"></ul>
+                    <div class="form-group row">
+                        <label for="CardNumber" class="col-sm-3 col-form-label">شماره کارت</label>
+                        <div class="col-sm-9">
+                            <input name="CardNumber" id="CardNumber" class="form-control text-right">
+                            <span class="text text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="BankId" class="col-sm-3 col-form-label">نام بانک</label>
+                        <div class="col-sm-9">
+                            <select class="form-control" name="BankId" id="BankId" asp-items="@ViewBag.BankId">
+                                <option value="0">انتخاب کنید</option>
+                            </select>
+                            <span class="text text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="AccountNumber" class="col-sm-3 col-form-label">شماره حساب</label>
+                        <div class="col-sm-9">
+                            <input name="AccountNumber" id="AccountNumber" class="form-control text-right">
+                            <span class="text text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="Sheba" class="col-sm-3 col-form-label">شماره شبا</label>
+                        <div class="col-sm-9">
+                            <div class="input-group">
+                                <input name="Sheba" id="Sheba" class="form-control text-right" dir="ltr">
+                                <div class="input-group-append">
+                                    <span class="input-group-text" id="inputGroupPrepend3">IR</span>
+                                </div>
+                            </div>
+                            <span class="text text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="BankCardImage" class="col-sm-3 col-form-label">عکس کارت بانکی</label>
+                        <div class="col-sm-9">
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" name="BankCardImage" id="BankCardImage">
+                                <label class="custom-file-label" for="BankCardImage"></label>
+                            </div>
+                            <span class="text text-danger"></span>
+                        </div>
+                    </div>
+                    @* <div class="form-group row"> *@
+                    @*     <div class="col-md-2"></div> *@
+                    @*     <div class="col-md-9"> *@
+                    @*         <button type="submit" class="btn btn-primary">ذخیره تغییرات</button> *@
+                    @*     </div> *@
+                    @* *@
+                    @* </div> *@
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>
+                    <button type="submit" class="btn btn-primary" id="btnSubmit">ذخیره تغییرات</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section ProfileScripts {
+    <script src="/assets/js/jquery.unobtrusive-ajax.js"></script>
+    <script>
+        $(".custom-file-input").on("change", function(){
+            let fileName = $(this).val().split("\\").pop();
+            $(this).next(".custom-file-label").html(fileName);
+        });
+        
+        function Loading(flag, element) {
+            if (flag === true) {
+                $("button").attr("disabled", true);
+                $("#" + element).append("<div class='loader ml-2'></div>");
+            }
+            else {
+                $(".loader").remove();
+                $("button").attr("disabled", false);
+            }
+        }
+    
+        function begin() {
+            $("#errors").empty();
+            Loading(true, "btnSubmit");
+        }
+    
+        function complete() {
+            Loading(false, "btnSubmit");
+        }
+        
+        function success(data) {
+            Loading(false, "btnSubmit");
+            if (data.success) {
+                location.reload();
+            }
+            else {
+                data.messages.forEach(function (element) {
+                    $("#errors").append("<li>" + element + "</li>");
+                });
+            }
+        }
+    </script>
+}

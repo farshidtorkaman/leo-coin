@@ -12,8 +12,8 @@
                 <figure class="avatar avatar-xl">
                     <img src="~/assets/media/image/user.png" class="rounded-circle" alt="image">
                 </figure>
-                <p>فرشید ترکمن</p>
-                <p>farshidtorkaman98@gmail.com</p>
+                <p id="fullname"></p>
+                <p id="email"></p>
             </div>
             <hr />
             <div class="nav flex-column nav-pills profileMenu" id="v-pills-tab" role="tablist" aria-orientation="vertical">
@@ -31,4 +31,13 @@
 
 @section Scripts {
     @RenderSection("ProfileScripts", false)
+    
+    <script>
+        $.get('/panel/user/get_full_name', function(response){
+            $("#fullname").append(response);
+        })
+        $.get('/panel/user/get_email', function(response){
+            $("#email").append(response);
+        })
+    </script>
 }

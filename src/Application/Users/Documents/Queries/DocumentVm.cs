@@ -11,10 +11,8 @@ namespace Crypto.Application.Users.Documents.Queries
         public string NationalCode { get; set; }
         public DateTime? BirthDate { get; set; }
         public string NationalCardImage { get; set; }
-        public string BankCardImage { get; set; }
         public string ApplicantImage { get; set; }
         public DocumentImagesStatus? NationalCardImageStatus { get; set; }
-        public DocumentImagesStatus? BankCardImageStatus { get; set; }
         public DocumentImagesStatus? ApplicantImageStatus { get; set; }
     }
 }

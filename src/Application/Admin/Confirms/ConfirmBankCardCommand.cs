@@ -13,6 +13,7 @@ namespace Crypto.Application.Admin.Confirms
     {
         public string UserId { get; set; }
         public bool IsConfirm { get; set; }
+        public int FinancialId { get; set; }
     }
 
     public class ConfirmBankCardCommandHandler : IRequestHandler<ConfirmBankCardCommand>
@@ -32,19 +33,18 @@ namespace Crypto.Application.Admin.Confirms
             if (username == null)
                 throw new NotFoundException();
 
-            var document =
-                await _context.Documents.FirstOrDefaultAsync(f => f.CreatedBy == request.UserId, cancellationToken);
-            if (document == null)
-                throw new NotFoundException(nameof(Document), request.UserId);
+            var financial =
+                await _context.FinancialInformation.FirstOrDefaultAsync(f => f.Id == request.FinancialId, cancellationToken);
+            if (financial == null)
+                throw new NotFoundException(nameof(FinancialInfo), request.FinancialId);
 
-            document.BankCardImageStatus =
-                request.IsConfirm ? DocumentImagesStatus.Confirmed : DocumentImagesStatus.Rejected;
+            financial.Status =
+                request.IsConfirm ? Status.Confirmed : Status.Rejected;
 
             await _context.SaveChangesAsync(cancellationToken);
             if (request.IsConfirm)
                 await _identityService.AddConfirmsClaim(request.UserId, "BankCard");
             
-
             return Unit.Value;
         }
     }

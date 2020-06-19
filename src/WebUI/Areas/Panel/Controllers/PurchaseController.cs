@@ -27,7 +27,7 @@ namespace WebUI.Areas.Panel.Controllers
             if (displayUrl == null)
                 return BadRequest();
 
-            if (!await Mediator.Send(new GetCurrencyQuery {DisplayUrl = displayUrl}))
+            if (!await Mediator.Send(new GetCurrencyQuery { DisplayUrl = displayUrl }))
                 return NotFound("Currency Not Found!");
 
             return View();
@@ -42,10 +42,10 @@ namespace WebUI.Areas.Panel.Controllers
             {
                 command.CurrencyUrl = displayUrl;
                 command.UserId = CurrentUserService.UserId;
-                var purchaseId = await Mediator.Send(command);
+                var (purchaseId, pricePaid) = await Mediator.Send(command);
 
-                var callBackUrl = Url.Action("Verify", "Purchase", new {purchaseId}, Request.Scheme);
-                var redirect = await _paymentService.Pay(1000, callBackUrl);
+                var callBackUrl = Url.Action("Verify", "Purchase", new { purchaseId }, Request.Scheme);
+                var redirect = await _paymentService.Pay(pricePaid, callBackUrl);
 
                 return Redirect(redirect);
             }
@@ -73,7 +73,8 @@ namespace WebUI.Areas.Panel.Controllers
                 {
                     var command = new FinalizePurchaseCommand
                     {
-                        PurchaseId = purchaseId, TransactionId = transactionId
+                        PurchaseId = purchaseId,
+                        TransactionId = transactionId
                     };
 
                     await Mediator.Send(command);

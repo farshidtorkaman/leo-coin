@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Crypto.Application.Common.Exceptions;
 using Crypto.Application.Common.Interfaces;
-using Crypto.Domain.Entities;
 using Crypto.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -83,7 +82,7 @@ namespace Crypto.Application.Reports.Queries
 
 
             var nationalCardReport = new ConfirmationQueryVm {Title = "کارت ملی"};
-            var bankCardReport = new ConfirmationQueryVm {Title = "کارت بانکی"};
+            // var bankCardReport = new ConfirmationQueryVm {Title = "کارت بانکی"};
             var applicantReport = new ConfirmationQueryVm {Title = "درخواست نامه"};
             
             if (document != null)
@@ -109,26 +108,26 @@ namespace Crypto.Application.Reports.Queries
                     nationalCardReport.ClassName = "";
                 }
 
-                if (document.BankCardImage != null)
-                {
-                    bankCardReport.Status = document.BankCardImageStatus switch
-                    {
-                        DocumentImagesStatus.Sent => Status.Sent,
-                        DocumentImagesStatus.Confirmed => Status.Confirmed,
-                        _ => Status.Rejected
-                    };
-                    bankCardReport.ClassName = document.BankCardImageStatus switch
-                    {
-                        DocumentImagesStatus.Sent => "badge-light",
-                        DocumentImagesStatus.Confirmed => "badge-success",
-                        _ => "badge-danger"
-                    };
-                }
-                else
-                {
-                    bankCardReport.Status = Status.NotSent;
-                    bankCardReport.ClassName = "";
-                }
+                // if (document.BankCardImage != null)
+                // {
+                //     bankCardReport.Status = document.BankCardImageStatus switch
+                //     {
+                //         DocumentImagesStatus.Sent => Status.Sent,
+                //         DocumentImagesStatus.Confirmed => Status.Confirmed,
+                //         _ => Status.Rejected
+                //     };
+                //     bankCardReport.ClassName = document.BankCardImageStatus switch
+                //     {
+                //         DocumentImagesStatus.Sent => "badge-light",
+                //         DocumentImagesStatus.Confirmed => "badge-success",
+                //         _ => "badge-danger"
+                //     };
+                // }
+                // else
+                // {
+                //     bankCardReport.Status = Status.NotSent;
+                //     bankCardReport.ClassName = "";
+                // }
 
                 if (document.ApplicantImage != null)
                 {
@@ -156,8 +155,8 @@ namespace Crypto.Application.Reports.Queries
                 nationalCardReport.Status = Status.NotSent;
                 nationalCardReport.ClassName = "";
 
-                bankCardReport.Status = Status.NotSent;
-                bankCardReport.ClassName = "";
+                // bankCardReport.Status = Status.NotSent;
+                // bankCardReport.ClassName = "";
 
                 applicantReport.Status = Status.NotSent;
                 applicantReport.ClassName = "";
@@ -165,7 +164,7 @@ namespace Crypto.Application.Reports.Queries
 
 
             return new List<ConfirmationQueryVm>
-                {phoneReport, tellReport, nationalCardReport, bankCardReport, applicantReport};
+                {phoneReport, tellReport, nationalCardReport, applicantReport};
         }
     }
 }

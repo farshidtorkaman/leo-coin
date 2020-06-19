@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Crypto.Application.Admin.Confirms;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ControllerBase = WebUI.Controllers.ControllerBase;
 
@@ -8,6 +9,7 @@ namespace WebUI.Areas.Admin.Controllers
 {
     [Area("admin")]
     [Route("admin/confirm")]
+    [Authorize(Roles = "admin")]
     public class ConfirmsController : ControllerBase
     {
         [Route("tell")]
@@ -43,11 +45,11 @@ namespace WebUI.Areas.Admin.Controllers
 
         [Route("bank_card")]
         [HttpPost]
-        public async Task<IActionResult> ConfirmBankCard(string userId, bool isConfirm)
+        public async Task<IActionResult> ConfirmBankCard(string userId, bool isConfirm, int financialId)
         {
             try
             {
-                await Mediator.Send(new ConfirmBankCardCommand {UserId = userId, IsConfirm = isConfirm});
+                await Mediator.Send(new ConfirmBankCardCommand {UserId = userId, IsConfirm = isConfirm, FinancialId = financialId});
                 return Json(true);
             }
             catch (Exception e)

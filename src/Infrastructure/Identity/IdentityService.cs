@@ -95,7 +95,7 @@ namespace Crypto.Infrastructure.Identity
 
 </html>";
                 _emailSender.SendEmailAsync(email, "تاییدیه ایمیل", htmlMessage);
-                
+
                 return true;
             }
             catch (Exception ex)
@@ -104,7 +104,7 @@ namespace Crypto.Infrastructure.Identity
                 throw new Exception(ex.Message);
             }
         }
-        
+
         public bool SendResetPasswordEmailAsync(string email, string callBackUrl)
         {
             try
@@ -167,7 +167,7 @@ namespace Crypto.Infrastructure.Identity
 
 </html>";
                 _emailSender.SendEmailAsync(email, "فراموشی رمز عبور", htmlMessage);
-                
+
                 return true;
             }
             catch (Exception ex)
@@ -328,7 +328,10 @@ namespace Crypto.Infrastructure.Identity
         public async Task AddConfirmsClaim(string userId, string value)
         {
             var user = await _userManager.FindByIdAsync(userId);
-            await _userManager.AddClaimAsync(user, new Claim("ConfirmationType", value));
+            var claims = await _userManager.GetClaimsAsync(user);
+            
+            if (!claims.Any(f => f.Value == value))
+                await _userManager.AddClaimAsync(user, new Claim("ConfirmationType", value));
         }
 
         public async Task RemoveConfirmsClaim(string userId, string value)

@@ -12,7 +12,6 @@ namespace Crypto.Application.Users.FinancialInformation.Commands
 {
     public class CreateFinancialInfoCommand : IRequest<int>
     {
-        public int Id { get; set; }
         public string CardNumber { get; set; }
         public int? BankId { get; set; }
         public string AccountNumber { get; set; }
@@ -25,13 +24,15 @@ namespace Crypto.Application.Users.FinancialInformation.Commands
         private readonly IApplicationDbContext _context;
         private readonly IImageAccessor _imageAccessor;
         private readonly ICurrentUserService _currentUserService;
+        private readonly INotificationService _notificationService;
 
         public CreateFinancialInfoCommandHandler(IApplicationDbContext context, IImageAccessor imageAccessor,
-            ICurrentUserService currentUserService)
+            ICurrentUserService currentUserService, INotificationService notificationService)
         {
             _context = context;
             _imageAccessor = imageAccessor;
             _currentUserService = currentUserService;
+            _notificationService = notificationService;
         }
 
         public async Task<int> Handle(CreateFinancialInfoCommand request, CancellationToken cancellationToken)
@@ -50,6 +51,7 @@ namespace Crypto.Application.Users.FinancialInformation.Commands
                 Status = Status.Sent
             };
             _context.FinancialInformation.Add(financialInfo);
+            _notificationService.SendAsync(NotificationType.BankCard);
 
             await _context.SaveChangesAsync(cancellationToken);
 

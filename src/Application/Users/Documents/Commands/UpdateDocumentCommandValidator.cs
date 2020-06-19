@@ -19,13 +19,10 @@ namespace Crypto.Application.Users.Documents.Commands
             RuleFor(f => f.BirthDate)
                 .NotEmpty().WithMessage("تاریخ تولد خود را وارد نمایید");
             RuleFor(f => f.NationalCardImage)
-                .Must(BeImage).WithMessage("عکس بذار")
-                .Must(BeMaximumFiveMeg).WithMessage("حداکثر میتوانید پنج مگابایت عکس آپلود نمایید");
-            RuleFor(f => f.BankCardImage)
-                .Must(BeImage).WithMessage("عکس بذار")
+                .Must(BeImage).WithMessage("فرمت فایل ارسالی پشتیبانی نمیشود")
                 .Must(BeMaximumFiveMeg).WithMessage("حداکثر میتوانید پنج مگابایت عکس آپلود نمایید");
             RuleFor(f => f.ApplicantImage)
-                .Must(BeImage).WithMessage("عکس بذار")
+                .Must(BeImage).WithMessage("فرمت فایل ارسالی پشتیبانی نمیشود")
                 .Must(BeMaximumFiveMeg).WithMessage("حداکثر میتوانید پنج مگابایت عکس آپلود نمایید");
         }
 
@@ -56,7 +53,7 @@ namespace Crypto.Application.Users.Documents.Commands
             return file.Length <= 5242880;
         }
 
-        public bool BeImage(UpdateDocumentCommand command, IFormFile file)
+        private bool BeImage(UpdateDocumentCommand command, IFormFile file)
         {
             // if the file is null ignore it
             if (file == null)

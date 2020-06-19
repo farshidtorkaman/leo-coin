@@ -8,14 +8,73 @@
 <!-- LightBox -->
 <link rel="stylesheet" href="~/vendors/lightbox/magnific-popup.css" type="text/css">
 <style>
-    .table-striped td {
+    .table-striped td, .table-striped th {
         text-align: center;
     }
-    .table-striped img {
+    img {
         width: 15%;
     }
 </style>
 
+<div class="row">
+    <div class="card">
+        <div class="card-header d-flex justify-content-between">
+            اطلاعات بانکی
+        </div>
+        <div class="card-body pt-2">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">بانک</th>
+                    <th scope="col">شماره کارت</th>
+                    <th scope="col">شماره حساب</th>
+                    <th scope="col">شماره شبا</th>
+                    <th scope="col">عکس کارت بانکی</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var item in Model.Financials)
+                {
+                    <tr id="financial_@item.Id">
+                        <td>@item.BankName</td>
+                        <td>@item.BankCardNumber</td>
+                        <td>@item.AccountNumber</td>
+                        <td>IR-@item.Sheba</td>
+                        <td>
+                            <a class="image-popup" href="@item.BankCardImage">
+                                <img src="@item.BankCardImage" class="img-fluid" alt="image">
+                            </a>
+                        </td>
+                        @switch (item.Status)
+                        {
+                            case Status.NotSent:
+                                <td></td>
+                                break;
+                            case Status.Sent:
+                                <td>
+                                    <button class="btn btn-success confirm" data-title="کارت بانکی" data-url="bank_card">تایید</button>
+                                    <button class="btn btn-danger reject" data-title="کارت بانکی" data-url="bank_card">رد</button>
+                                </td>
+                                break;
+                            case Status.Confirmed:
+                                <td class="text text-success">تایید شده</td>
+                                break;
+                            case Status.Rejected:
+                                <td class="text text-danger">رد شده</td>
+                                break;
+                            default:
+                                <td>نامشخص</td>
+                                break;
+                        }
+
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 <div class="row row-sm">
 <div class="col-md-7">
     <div class="card">
@@ -165,45 +224,6 @@
             </div>
         </div>
     </div>
-    <div class="card">
-        <div class="card-header d-flex justify-content-between">
-            اطلاعات بانکی
-        </div>
-        <div class="card-body pt-2">
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item d-flex justify-content-between align-items-center p-l-r-0">
-
-                    <h6 class="m-b-0 primary-font">شماره کارت</h6>
-
-                    <h6>@Model.BankCardNumber</h6>
-                </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center p-l-r-0">
-
-                    <h6 class="m-b-0 primary-font">نام بانک</h6>
-
-                    <h6>@Model.BankName</h6>
-                </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center p-l-r-0">
-
-                    <h6 class="m-b-0 primary-font">نام دارنده حساب</h6>
-
-                    <h6>@Model.AccountOwnerName</h6>
-                </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center p-l-r-0">
-
-                    <h6 class="m-b-0 primary-font">شماره حساب</h6>
-
-                    <h6>@Model.AccountNumber</h6>
-                </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center p-l-r-0">
-
-                    <h6 class="m-b-0 primary-font">شماره شبا</h6>
-
-                    <h6>IR-@Model.Sheba</h6>
-                </li>
-            </ul>
-        </div>
-    </div>
 </div>
 <div class="col-md-5">
     <div class="card">
@@ -265,11 +285,12 @@
     <!-- LightBox -->
     <script src="~/vendors/lightbox/jquery.magnific-popup.min.js"></script>
     <script src="~/assets/js/examples/lightbox.js"></script>
-    
+
     <script>
         $('.confirm').on('click', function () {
             let title = $(this).data('title');
             let url = $(this).data('url');
+            let financialId = $(this).parent().parent().attr('id').split('_')[1];
             swal({
                 title: "تایید " + title,
                 icon: "warning",
@@ -283,7 +304,7 @@
                     if (willDelete) {
                         $.ajax({
                             url: '/admin/confirm/' + url,
-                            data: { userId: '@ViewData["UserId"]', isConfirm: true },
+                            data: { userId: '@ViewData["UserId"]', isConfirm: true, financialId: financialId },
                             type: 'post',
                             success: function(){
                                 swal(title + " مورد نظر تایید شد", {
@@ -311,6 +332,7 @@
         $('.reject').on('click', function () {
             let title = $(this).data('title');
             let url = $(this).data('url');
+            let financialId = $(this).parent().parent().attr('id').split('_')[1];
             swal({
                 title: "رد " + title,
                 icon: "error",
@@ -324,7 +346,7 @@
                     if (willDelete) {
                         $.ajax({
                             url: '/admin/confirm/' + url,
-                            data: { userId: '@ViewData["UserId"]', isConfirm: false },
+                            data: { userId: '@ViewData["UserId"]', isConfirm: false, financialId: financialId },
                             type: 'post',
                             success: function(){
                                 swal(title + " مورد نظر رد شد", {

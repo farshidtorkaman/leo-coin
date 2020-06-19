@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Crypto.Application.Common.Exceptions;
 using Crypto.Application.Common.Interfaces;
@@ -60,25 +61,29 @@ namespace Crypto.Application.Admin.Users.Queries
                 document.NationalCardImageStatus == DocumentImagesStatus.Sent ? Status.Sent :
                 document.NationalCardImageStatus == DocumentImagesStatus.Confirmed ? Status.Confirmed : Status.Rejected;
 
-            user.BankCardImage = document?.BankCardImage ?? "-";
-            user.BankCardStatus = document?.BankCardImage == null ? Status.NotSent :
-                document.BankCardImageStatus == DocumentImagesStatus.Sent ? Status.Sent :
-                document.BankCardImageStatus == DocumentImagesStatus.Confirmed ? Status.Confirmed : Status.Rejected;
+            // user.BankCardImage = document?.BankCardImage ?? "-";
+            // user.BankCardStatus = document?.BankCardImage == null ? Status.NotSent :
+            //     document.BankCardImageStatus == DocumentImagesStatus.Sent ? Status.Sent :
+            //     document.BankCardImageStatus == DocumentImagesStatus.Confirmed ? Status.Confirmed : Status.Rejected;
 
             user.ApplicantImage = document?.ApplicantImage ?? "-";
             user.ApplicantStatus = document?.ApplicantImage == null ? Status.NotSent :
                 document.ApplicantImageStatus == DocumentImagesStatus.Sent ? Status.Sent :
                 document.ApplicantImageStatus == DocumentImagesStatus.Confirmed ? Status.Confirmed : Status.Rejected;
 
-            var financial =
-                await _context.FinancialInformation.Include(f => f.Bank).FirstOrDefaultAsync(
-                    f => f.CreatedBy == request.UserId,
-                    cancellationToken);
-            user.BankCardNumber = financial?.CardNumber ?? "-";
-            user.BankName = financial?.Bank?.Title ?? "-";
-            user.AccountOwnerName = financial?.AccountOwnerName ?? "-";
-            user.AccountNumber = financial?.AccountNumber ?? "-";
-            user.Sheba = financial?.Sheba ?? "-";
+            var financials =
+                await _context.FinancialInformation.Include(f => f.Bank).Where(f => f.CreatedBy == request.UserId)
+                    .ToListAsync(cancellationToken);
+            user.Financials = financials.Select(financial => new Financial
+            {
+                Id = financial.Id,
+                BankCardNumber = financial.CardNumber,
+                BankName = financial.Bank.Title,
+                AccountNumber = financial.AccountNumber,
+                Sheba = financial.Sheba,
+                BankCardImage = financial.BankCardImage,
+                Status = financial.Status
+            }).ToList();
 
             return user;
         }

@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Text.Json.Serialization;
-using Crypto.Application.Banks.Queries;
+﻿using System.Text.Json.Serialization;
 using Newtonsoft.Json.Linq;
 
 namespace Crypto.Application.PriceCalculations

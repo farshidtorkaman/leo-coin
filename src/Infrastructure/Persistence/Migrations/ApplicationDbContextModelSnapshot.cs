@@ -106,12 +106,6 @@ namespace Crypto.Infrastructure.Persistence.Migrations
                     b.Property<int?>("ApplicantImageStatus")
                         .HasColumnType("int");
 
-                    b.Property<string>("BankCardImage")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<int?>("BankCardImageStatus")
-                        .HasColumnType("int");
-
                     b.Property<DateTime?>("BirthDate")
                         .HasColumnType("datetime(6)");
 
@@ -153,7 +147,7 @@ namespace Crypto.Infrastructure.Persistence.Migrations
                     b.Property<string>("AccountNumber")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<string>("AccountOwnerName")
+                    b.Property<string>("BankCardImage")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<int?>("BankId")
@@ -176,6 +170,9 @@ namespace Crypto.Infrastructure.Persistence.Migrations
 
                     b.Property<string>("Sheba")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.Property<string>("UserId")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");

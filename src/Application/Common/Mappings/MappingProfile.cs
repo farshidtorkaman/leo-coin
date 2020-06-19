@@ -18,7 +18,6 @@ namespace Crypto.Application.Common.Mappings
             ApplyMappingsFromAssembly(Assembly.GetExecutingAssembly());
 
             CreateMap<UpdateProfileCommand, UserProfileVm>();
-            CreateMap<UpdateFinancialInfoCommand, FinancialInfoVm>();
             CreateMap<UpdateDocumentCommand, DocumentVm>();
         }
 
